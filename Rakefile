@@ -15,8 +15,8 @@ Jeweler::Tasks.new do |gem|
   gem.name = "tracking_number"
   gem.homepage = "http://github.com/jkeen/tracking_number"
   gem.license = "MIT"
-  gem.summary = %Q{TODO: one-line summary of your gem}
-  gem.description = %Q{TODO: longer description of your gem}
+  gem.summary = %Q{Identifies valid tracking numbers}
+  gem.description = %Q{Match tracking numbers to a service, and search blocks of text and pull out valid tracking numbers.}
   gem.email = "jeff@keen.me"
   gem.authors = ["Jeff Keen"]
   # Include your dependencies below. Runtime dependencies are required when using your gem,

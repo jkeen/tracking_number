@@ -1,6 +1,20 @@
 = tracking_number
 
-Description goes here.
+Identifies valid tracking numbers and the service they're associated with.
+
+t = TrackingNumber.new("MYSTERY_TRACKING_NUMBER")
+t.valid? #=> false
+t.carrier #=> :unknown
+
+t = TrackingNumber.new("1Z879E930346834440")
+t.valid? #=> true
+t.carrier #=> :ups
+
+Also can take a block of text and find all the valid tracking numbers within it
+
+TrackingNumber.search("Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, 1Z879E930346834440 nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute 9611020987654312345672 dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.")
+
+#=> [TrackingNumber, TrackingNumber]
 
 == Contributing to tracking_number
  
