@@ -15,4 +15,14 @@ $LOAD_PATH.unshift(File.dirname(__FILE__))
 require 'tracking_number'
 
 class Test::Unit::TestCase
+  def possible_numbers(tracking)
+    possible_numbers = []
+    possible_numbers << tracking
+    possible_numbers << tracking.chars.to_a.join(" ")
+    possible_numbers << tracking.chars.to_a.join("  ")
+    possible_numbers << tracking.slice(0, (tracking.length / 2)) + "  " + tracking.slice((tracking.length / 2), tracking.length)
+    
+    possible_numbers
+  end
+  
 end

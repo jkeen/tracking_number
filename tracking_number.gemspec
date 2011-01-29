@@ -9,8 +9,8 @@ Gem::Specification.new do |s|
 
   s.required_rubygems_version = Gem::Requirement.new(">= 0") if s.respond_to? :required_rubygems_version=
   s.authors = ["Jeff Keen"]
-  s.date = %q{2010-12-30}
-  s.description = %q{Match tracking numbers to a service, and verify that they're valid }
+  s.date = %q{2011-01-29}
+  s.description = %q{Match tracking numbers to a service, and search blocks of text and pull out valid tracking numbers.}
   s.email = %q{jeff@keen.me}
   s.extra_rdoc_files = [
     "LICENSE.txt",
@@ -19,12 +19,15 @@ Gem::Specification.new do |s|
   s.files = [
     ".document",
     "Gemfile",
+    "Gemfile.lock",
     "LICENSE.txt",
     "README.rdoc",
     "Rakefile",
     "VERSION",
     "lib/tracking_number.rb",
-    "test/test_tracking_number.rb"
+    "test/test_helper.rb",
+    "test/test_tracking_number.rb",
+    "tracking_number.gemspec"
   ]
   s.homepage = %q{http://github.com/jkeen/tracking_number}
   s.licenses = ["MIT"]
