@@ -10,10 +10,10 @@ require 'ups'
 require 'dhl'
 
 class TrackingNumber
-  TYPES = [UPS, FedExExpress, FedExGround18, FedExGround96, USPS91, USPS20, USPS13, DHL]
+  TYPES = [UPS, FedExExpress, FedExGround, FedExGround18, FedExGround96, USPS91, USPS20, USPS13, DHL]
 
   def self.search(body)
-   self.scan(body).uniq.collect { |possible| self.detect(possible) }.select { |t| t.valid? }
+    TYPES.collect { |type| type.search(body) }.flatten
   end
 
   def self.detect(tracking_number)
@@ -27,13 +27,7 @@ class TrackingNumber
     return Unknown.new(tracking_number)
   end
 
-  # Ha ha fooled you, makes it look like an instance method, but fakes 
   def self.new(tracking_number)
     self.detect(tracking_number)
   end
-
-  private
-    def self.scan(body)
-      possibles = TYPES.collect { |type| body.scan(type.const_get("SEARCH_PATTERN")) }.uniq.flatten
-    end
 end

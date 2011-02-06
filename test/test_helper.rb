@@ -35,10 +35,10 @@ class Test::Unit::TestCase
     %Q{Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor #{number} ut labore et dolore magna aliqua.}
   end
 
-  def should_detect_number_variants(valid_number, expected_class)
-    possible_strings(valid_number).each do |string|
-      results = TrackingNumber.search(string)
-      assert_equal expected_class, TrackingNumber.search(string).first.class, "could not find #{expected_class} #{valid_number} in #{string}"
+  def should_detect_number_variants(valid_number, type)
+    possible_strings(valid_number).each do |string|      
+      results = type.search(string)
+      assert_equal 1, results.size, "could not find #{type} #{valid_number} in #{string}"
     end
   end
 end

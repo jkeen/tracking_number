@@ -6,6 +6,14 @@ class TrackingNumber
       @tracking_number = tracking_number.gsub(" ", "").upcase
     end
 
+    def self.search(body)
+     self.scan(body).uniq.collect { |possible| new(possible) }.select { |t| t.valid? }
+    end
+    
+    def self.scan(body)
+      possibles = body.scan(self.const_get("SEARCH_PATTERN")).uniq.flatten
+    end
+
     def valid?
       return false unless valid_format?
       return false unless valid_checksum?

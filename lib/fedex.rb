@@ -8,7 +8,8 @@ class TrackingNumber
   class FedExExpress < FedEx
     SEARCH_PATTERN = /(\b([0-9]\s*){12,12}\b)/
     VERIFY_PATTERN = /^([0-9]{11,11})([0-9])$/
-
+    LENGTH = 12
+    
     def matches
       self.tracking_number.scan(VERIFY_PATTERN).flatten
     end
@@ -21,11 +22,14 @@ class TrackingNumber
       return (total % 11) == check.to_i
     end
   end
+  
+  #TODO Fix these FedEx ground numberss
 
   class FedExGround96 < FedEx
     SEARCH_PATTERN = /(\b9\s*6\s*([0-9]\s*){20,20}\b)/
     VERIFY_PATTERN = /^96[0-9]{5,5}([0-9]{14,14})([0-9])$/
-
+    LENGTH = 22
+    
     def matches
       self.tracking_number.scan(VERIFY_PATTERN).flatten
     end
@@ -64,10 +68,34 @@ class TrackingNumber
     end
   end
 
+  class FedExGround < FedEx
+    SEARCH_PATTERN = /(\b([0-9]\s*){15,15}\b)/
+    VERIFY_PATTERN = /^([0-9]{15,15})$/
+    LENGTH = 15
+    
+    def matches
+      self.tracking_number.scan(VERIFY_PATTERN).flatten
+    end
+
+    def valid_checksum?
+      sequence = tracking_number.chars.to_a.map(&:to_i)
+      check_digit = sequence.pop
+      total = 0
+      sequence.reverse.each_with_index do |x, i|
+        x *= 3 if i.even?
+        total += x
+      end
+      check = total % 10
+      check = (10 - check) unless (check.zero?)
+      return true if check == check_digit.to_i
+    end
+  end
+
   class FedExGround18 < FedEx
     SEARCH_PATTERN = /(\b([0-9]\s*){18,18}\b)/
     VERIFY_PATTERN = /^[0-9]{2,2}([0-9]{15,15})([0-9])$/
-
+    LENGTH = 20
+    
     def matches
       self.tracking_number.scan(VERIFY_PATTERN).flatten
     end
