@@ -2,7 +2,7 @@ require 'test_helper'
 
 class USPSTrackingNumberTest < Test::Unit::TestCase
   context "a USPS tracking number" do
-    ["9101 1234 5678 9000 0000 13"].each do |valid_number|
+    ["9101 1234 5678 9000 0000 13", "7196 9010 7560 0307 7385"].each do |valid_number|
       should "return usps with valid 22 digit number: #{valid_number}" do
         t = TrackingNumber.new("9101 1234 5678 9000 0000 13")
         assert_equal TrackingNumber::USPS91, t.class
@@ -14,9 +14,6 @@ class USPSTrackingNumberTest < Test::Unit::TestCase
         should_detect_number_variants(valid_number, TrackingNumber::USPS91)
       end
     end
-    
-    # Actual tracking number I got from the USPS that doesn't validate.  UGghhh
-    #"7196 9010 7560 0307 7385"
     
     ["0307 1790 0005 2348 3741"].each do |valid_number|
       should "detect #{valid_number} regardless of spacing" do

@@ -6,12 +6,10 @@ class TrackingNumber
   end
   
   class USPS91 < USPS
-    SEARCH_PATTERN = /(\b9\s*1\s*(([0-9]\s*){20,20}\b))/
+    SEARCH_PATTERN = [/(\b9\s*1\s*(([0-9]\s*){20,20}\b))/, /(\b([0-9]\s*){20,20}\b)/]
     VERIFY_PATTERN = /^(91[0-9]{19,19})([0-9])$/
-
-    def matches
-      self.tracking_number.scan(VERIFY_PATTERN).flatten
-    end
+  
+    # Sometimes these numbers will appear without the leading 91, though, so we need to account for that case
     
     def decode 
       # Application ID: 91
@@ -28,8 +26,30 @@ class TrackingNumber
       }
     end
     
+    def matches
+      if self.tracking_number =~ /^91/
+        self.tracking_number.scan(VERIFY_PATTERN).flatten
+      else
+        "91#{self.tracking_number}".scan(VERIFY_PATTERN).flatten
+      end
+    end
+    
     def valid_checksum?
-      chars = tracking_number.chars.to_a
+      if self.tracking_number =~ /^91/ 
+        return true if weighted_usps_checksum_valid?(tracking_number) 
+      else
+        if weighted_usps_checksum_valid?("91#{self.tracking_number}")
+          # set the tracking number to the 91 format if it passes this test
+          self.tracking_number = "91#{self.tracking_number}"
+          return true
+        end
+      end
+    end
+    
+    private
+    
+    def weighted_usps_checksum_valid?(sequence)
+      chars = sequence.chars.to_a
       check_digit = chars.pop
       
       total = 0
@@ -47,6 +67,9 @@ class TrackingNumber
   end
   
   class USPS20 < USPS
+    # http://www.usps.com/cpim/ftp/pubs/pub109.pdf (Publication 109. Extra Services Technical Guide, pg. 19)
+    # http://www.usps.com/cpim/ftp/pubs/pub91.pdf (Publication 91. Confirmation Services Technical Guide pg. 38)
+    
     SEARCH_PATTERN = /(\b([0-9]\s*){20,20}\b)/
     VERIFY_PATTERN = /^([0-9]{2,2})([0-9]{9,9})([0-9]{8,8})([0-9])$/
 
@@ -83,7 +106,6 @@ class TrackingNumber
       chars.reverse.each_with_index do |c, i|
         x = c.to_i
         x *= 3 if i.even?
-
         total += x
       end
 

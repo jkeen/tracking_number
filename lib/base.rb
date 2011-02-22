@@ -6,12 +6,24 @@ class TrackingNumber
       @tracking_number = tracking_number.gsub(" ", "").upcase
     end
 
-    def self.search(body)
-     self.scan(body).uniq.collect { |possible| new(possible) }.select { |t| t.valid? }
+    def self.search(body)      
+      valids = self.scan(body).uniq.collect { |possible| new(possible) }.select { |t| t.valid? }
+
+      uniques = {}
+      valids.each do |t|
+        uniques[t.tracking_number] = t unless uniques.has_key?(t.tracking_number)
+      end
+      
+      uniques.values
     end
     
     def self.scan(body)
-      possibles = body.scan(self.const_get("SEARCH_PATTERN")).uniq.flatten
+      patterns = [self.const_get("SEARCH_PATTERN")].flatten
+      possibles = patterns.collect do |pattern|
+        body.scan(pattern).uniq.flatten
+      end
+      
+      possibles.flatten.compact.uniq
     end
 
     def valid?
