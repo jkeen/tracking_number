@@ -42,49 +42,49 @@ class TrackingNumber
 
     def service_type
       case decode[:service_type]
-      when "01":
+      when "01"
        "UPS United States Next Day Air (Red)"
-      when "02":
+      when "02"
        "UPS United States Second Day Air (Blue)"
-      when "03":
+      when "03"
        "UPS United States Ground"
-      when "12":
+      when "12"
        "UPS United States Third Day Select"
-      when "13":
+      when "13"
        "UPS United States Next Day Air Saver (Red Saver)"
-      when "15":
+      when "15"
        "UPS United States Next Day Air Early A.M."
-      when "22":
+      when "22"
        "UPS United States Ground - Returns Plus - Three Pickup Attempts"
-      when "32":
+      when "32"
        "UPS United States Next Day Air Early A.M. - COD"
-      when "33":
+      when "33"
        "UPS United States Next Day Air Early A.M. - Saturday Delivery, COD"
-      when "41":
+      when "41"
        "UPS United States Next Day Air Early A.M. - Saturday Delivery"
-      when "42":
+      when "42"
        "UPS United States Ground - Signature Required"
-      when "44":
+      when "44"
        "UPS United States Next Day Air - Saturday Delivery"
-      when "66":
+      when "66"
        "UPS United States Worldwide Express"
-      when "72":
+      when "72"
        "UPS United States Ground - Collect on Delivery"
-      when "78":
+      when "78"
        "UPS United States Ground - Returns Plus - One Pickup Attempt"
-      when "90":
+      when "90"
        "UPS United States Ground - Returns - UPS Prints and Mails Label"
-      when "A0":
+      when "A0"
        "UPS United States Next Day Air Early A.M. - Adult Signature Required"
-      when "A1":
+      when "A1"
        "UPS United States Next Day Air Early A.M. - Saturday Delivery, Adult Signature Required"
-      when "A2":
+      when "A2"
        "UPS United States Next Day Air - Adult Signature Required"
-      when "A8":
+      when "A8"
        "UPS United States Ground - Adult Signature Required"
-      when "A9":
+      when "A9"
        "UPS United States Next Day Air Early A.M. - Adult Signature Required, COD"
-      when "AA":
+      when "AA"
        "UPS United States Next Day Air Early A.M. - Saturday Delivery, Adult Signature Required, COD"
      end
     end

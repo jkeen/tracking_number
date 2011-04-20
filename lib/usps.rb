@@ -124,7 +124,7 @@ class TrackingNumber
     end
 
     def valid_checksum?
-      sequence = tracking_number.scan(/[0-9]+/).flatten.to_s
+      sequence = tracking_number.scan(/[0-9]+/).flatten.join
       chars = sequence.chars.to_a
       check_digit = chars.pop.to_i
       
