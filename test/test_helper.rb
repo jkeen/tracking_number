@@ -41,4 +41,11 @@ class Test::Unit::TestCase
       assert_equal 1, results.size, "could not find #{type} #{valid_number} in #{string}"
     end
   end
+
+  def should_be_valid_number(valid_number, type, carrier)
+    t = TrackingNumber.new(valid_number)
+    assert_equal type, t.class
+    assert_equal carrier, t.carrier
+    assert t.valid?
+  end
 end

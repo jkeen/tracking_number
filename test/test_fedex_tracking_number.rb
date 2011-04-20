@@ -4,10 +4,7 @@ class FedExTrackingNumberTest < Test::Unit::TestCase
   context "a FedEx tracking number" do
     ["986578788855", "477179081230", "799531274483", "790535312317"].each do |valid_number|
       should "return fedex express for #{valid_number}" do
-        t = TrackingNumber.new(valid_number)
-        assert_equal TrackingNumber::FedExExpress, t.class
-        assert_equal :fedex, t.carrier
-        assert t.valid?
+        should_be_valid_number(valid_number, TrackingNumber::FedExExpress, :fedex)
       end
 
       should "detect #{valid_number} regardless of spacing" do
@@ -17,10 +14,7 @@ class FedExTrackingNumberTest < Test::Unit::TestCase
 
     ["9611020987654312345672"].each do |valid_number|
       should "return fedex 96 for #{valid_number}" do
-        t = TrackingNumber.new(valid_number)
-        assert_equal TrackingNumber::FedExGround96, t.class
-        assert_equal :fedex, t.carrier
-        assert t.valid?
+        should_be_valid_number(valid_number, TrackingNumber::FedExGround96, :fedex)
       end
 
       should "detect #{valid_number} regardless of spacing" do
@@ -30,10 +24,7 @@ class FedExTrackingNumberTest < Test::Unit::TestCase
     
     ["0414 4176 0228 964", "5682 8361 0012 000", "5682 8361 0012 734"].each do |valid_number|
       should "return fedex ground for #{valid_number}" do
-        t = TrackingNumber.new(valid_number)
-        assert_equal TrackingNumber::FedExGround, t.class
-        assert_equal :fedex, t.carrier
-        assert t.valid?
+        should_be_valid_number(valid_number, TrackingNumber::FedExGround, :fedex)
       end
 
       should "detect #{valid_number} regardless of spacing" do
@@ -43,10 +34,7 @@ class FedExTrackingNumberTest < Test::Unit::TestCase
 
     ["00 0123 4500 0000 0027"].each do |valid_number|
       should "return fedex sscc18 for #{valid_number}" do
-        t = TrackingNumber.new(valid_number)
-        assert_equal TrackingNumber::FedExGround18, t.class
-        assert_equal :fedex, t.carrier
-        assert t.valid?
+        should_be_valid_number(valid_number, TrackingNumber::FedExGround18, :fedex)
       end
 
       should "detect #{valid_number} regardless of spacing" do
