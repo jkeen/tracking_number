@@ -4,7 +4,7 @@ class USPSTrackingNumberTest < Test::Unit::TestCase
   context "a USPS tracking number" do
     ["9101 1234 5678 9000 0000 13", "7196 9010 7560 0307 7385"].each do |valid_number|
       should "return usps with valid 22 digit number: #{valid_number}" do
-        t = TrackingNumber.new("9101 1234 5678 9000 0000 13")
+        t = TrackingNumber.new(valid_number)
         assert_equal TrackingNumber::USPS91, t.class
         assert_equal :usps, t.carrier
         assert t.valid?
