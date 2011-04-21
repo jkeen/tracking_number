@@ -3,7 +3,7 @@ class TrackingNumber
     attr_accessor :tracking_number
     def initialize(tracking_number)
       @original_number = tracking_number
-      @tracking_number = tracking_number.gsub(" ", "").upcase
+      @tracking_number = tracking_number.strip.gsub(" ", "").upcase
     end
 
     def self.search(body)      
