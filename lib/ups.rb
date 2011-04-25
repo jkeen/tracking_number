@@ -86,7 +86,7 @@ class TrackingNumber
        "UPS United States Next Day Air Early A.M. - Adult Signature Required, COD"
       when "AA"
        "UPS United States Next Day Air Early A.M. - Saturday Delivery, Adult Signature Required, COD"
-     end
+      end
     end
   end
 end
