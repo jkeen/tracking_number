@@ -8,9 +8,10 @@ require 'usps'
 require 'fedex'
 require 'ups'
 require 'dhl'
+require 'ontrac'
 
 class TrackingNumber
-  TYPES = [UPS, FedExExpress, FedExGround, FedExGround18, FedExGround96, USPS91, USPS20, USPS13, DHL]
+  TYPES = [UPS, FedExExpress, FedExGround, FedExGround18, FedExGround96, USPS91, USPS20, USPS13, DHL, OnTrac]
 
   def self.search(body)
     TYPES.collect { |type| type.search(body) }.flatten
