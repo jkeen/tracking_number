@@ -31,13 +31,13 @@ Gem::Specification.new do |s|
     "lib/tracking_number/ontrac.rb",
     "lib/tracking_number/ups.rb",
     "lib/tracking_number/usps.rb",
-    "test/test_dhl_tracking_number.rb",
-    "test/test_fedex_tracking_number.rb",
+    "test/dhl_tracking_number_test.rb",
+    "test/fedex_tracking_number_test.rb",
+    "test/ontrac_tracking_number_test.rb",
     "test/test_helper.rb",
-    "test/test_ontrac_tracking_number.rb",
-    "test/test_tracking_number.rb",
-    "test/test_ups_tracking_number.rb",
-    "test/test_usps_tracking_number.rb",
+    "test/tracking_number_test.rb",
+    "test/ups_tracking_number_test.rb",
+    "test/usps_tracking_number_test.rb",
     "tracking_number.gemspec"
   ]
   s.homepage = %q{http://github.com/jkeen/tracking_number}
@@ -46,13 +46,13 @@ Gem::Specification.new do |s|
   s.rubygems_version = %q{1.6.0}
   s.summary = %q{Identifies valid tracking numbers}
   s.test_files = [
-    "test/test_dhl_tracking_number.rb",
-    "test/test_fedex_tracking_number.rb",
+    "test/dhl_tracking_number_test.rb",
+    "test/fedex_tracking_number_test.rb",
+    "test/ontrac_tracking_number_test.rb",
     "test/test_helper.rb",
-    "test/test_ontrac_tracking_number.rb",
-    "test/test_tracking_number.rb",
-    "test/test_ups_tracking_number.rb",
-    "test/test_usps_tracking_number.rb"
+    "test/tracking_number_test.rb",
+    "test/ups_tracking_number_test.rb",
+    "test/usps_tracking_number_test.rb"
   ]
 
   if s.respond_to? :specification_version then
