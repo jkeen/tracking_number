@@ -9,7 +9,7 @@ Gem::Specification.new do |s|
 
   s.required_rubygems_version = Gem::Requirement.new(">= 0") if s.respond_to? :required_rubygems_version=
   s.authors = ["Jeff Keen"]
-  s.date = %q{2011-04-26}
+  s.date = %q{2011-07-26}
   s.description = %q{Match tracking numbers to a service, and search blocks of text and pull out valid tracking numbers.}
   s.email = %q{jeff@keen.me}
   s.extra_rdoc_files = [
@@ -24,13 +24,13 @@ Gem::Specification.new do |s|
     "README.rdoc",
     "Rakefile",
     "VERSION",
-    "lib/base.rb",
-    "lib/dhl.rb",
-    "lib/fedex.rb",
-    "lib/ontrac.rb",
     "lib/tracking_number.rb",
-    "lib/ups.rb",
-    "lib/usps.rb",
+    "lib/tracking_number/base.rb",
+    "lib/tracking_number/dhl.rb",
+    "lib/tracking_number/fedex.rb",
+    "lib/tracking_number/ontrac.rb",
+    "lib/tracking_number/ups.rb",
+    "lib/tracking_number/usps.rb",
     "test/test_dhl_tracking_number.rb",
     "test/test_fedex_tracking_number.rb",
     "test/test_helper.rb",
@@ -43,7 +43,7 @@ Gem::Specification.new do |s|
   s.homepage = %q{http://github.com/jkeen/tracking_number}
   s.licenses = ["MIT"]
   s.require_paths = ["lib"]
-  s.rubygems_version = %q{1.7.2}
+  s.rubygems_version = %q{1.6.0}
   s.summary = %q{Identifies valid tracking numbers}
   s.test_files = [
     "test/test_dhl_tracking_number.rb",
