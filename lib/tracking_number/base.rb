@@ -6,7 +6,7 @@ module TrackingNumber
       @tracking_number = tracking_number.strip.gsub(" ", "").upcase
     end
 
-    def self.search(body)      
+    def self.search(body)
       valids = self.scan(body).uniq.collect { |possible| new(possible) }.select { |t| t.valid? }
 
       uniques = {}
@@ -51,6 +51,11 @@ module TrackingNumber
     def to_s
       self.tracking_number
     end
+
+    def inspect
+      "#<%s:%#0x %s>" % [self.class.to_s, self.object_id, tracking_number]
+    end
+
   end
 
   class Unknown < Base
