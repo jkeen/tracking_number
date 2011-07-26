@@ -1,4 +1,4 @@
-class TrackingNumber
+module TrackingNumber
   class Base
     attr_accessor :tracking_number
     def initialize(tracking_number)

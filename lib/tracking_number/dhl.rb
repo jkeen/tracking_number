@@ -1,4 +1,4 @@
-class TrackingNumber
+module TrackingNumber
   class DHL < Base
     SEARCH_PATTERN = /(\b([0-9]\s*){11,11}\b)/
     VERIFY_PATTERN = /^([0-9]{10,10})([0-9])$/

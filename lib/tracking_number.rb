@@ -10,7 +10,7 @@ require 'tracking_number/ups'
 require 'tracking_number/dhl'
 require 'tracking_number/ontrac'
 
-class TrackingNumber
+module TrackingNumber
   TYPES = [UPS, FedExExpress, FedExGround, FedExGround18, FedExGround96, USPS91, USPS20, USPS13, DHL, OnTrac]
 
   def self.search(body)
