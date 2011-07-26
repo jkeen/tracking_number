@@ -18,14 +18,12 @@ class TrackingNumber
   end
 
   def self.detect(tracking_number)
-    detected = TYPES.collect do |test|
-      t = test.new(tracking_number)
-      t if t.valid?
+    tn = nil
+    for test_klass in (TYPES+[Unknown])
+      tn = test_klass.new(tracking_number)
+      break if tn.valid?
     end
-    found = detected.compact.first
-
-    return found if found
-    return Unknown.new(tracking_number)
+    return tn
   end
 
   def self.new(tracking_number)
