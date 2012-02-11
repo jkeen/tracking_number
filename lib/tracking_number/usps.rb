@@ -1,4 +1,4 @@
-class TrackingNumber
+module TrackingNumber
   class USPS < Base
     def carrier
       :usps

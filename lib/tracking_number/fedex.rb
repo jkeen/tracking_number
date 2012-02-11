@@ -1,4 +1,4 @@
-class TrackingNumber
+module TrackingNumber
   class FedEx < Base
     def carrier
       :fedex

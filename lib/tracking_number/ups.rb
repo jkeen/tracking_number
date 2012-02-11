@@ -1,4 +1,4 @@
-class TrackingNumber
+module TrackingNumber
   class UPS < Base
     SEARCH_PATTERN = /(\b1\s*Z\s*(\w\s*){16,16}\b)/
     VERIFY_PATTERN = /^1Z(\w{15,15})(\w)$/
