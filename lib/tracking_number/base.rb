@@ -1,6 +1,8 @@
 module TrackingNumber
   class Base
     attr_accessor :tracking_number
+    attr_accessor :original_number
+
     def initialize(tracking_number)
       @original_number = tracking_number
       @tracking_number = tracking_number.strip.gsub(" ", "").upcase
