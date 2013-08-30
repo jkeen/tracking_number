@@ -7,13 +7,18 @@ module TrackingNumber
       :ups
     end
 
-    def uri
+    # commas for multiples
+    def self.uri(*args)
       _uri = URI('http://wwwapps.ups.com/WebTracking/track')
       _uri.query = URI.encode_www_form({
         :track     => 'yes',
-        :trackNums => tracking_number
+        :trackNums => args.map{|a| a.tracking_number }.join("\n")
       })
       return _uri
+    end
+
+    def uri
+      self.class.uri(self)
     end
 
     def matches

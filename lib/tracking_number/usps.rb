@@ -3,6 +3,20 @@ module TrackingNumber
     def carrier
       :usps
     end
+
+    # commas for multiples
+    def self.uri(*args)
+      _uri = URI('https://tools.usps.com/go/TrackConfirmAction_input')
+      _uri.query = URI.encode_www_form({
+        :qtc_tLabels1 => args.map{|a| a.tracking_number }.join(",")
+      })
+      return _uri
+    end
+
+    def uri
+      self.class.uri(self)
+    end
+
   end
 
   class USPS91 < USPS
