@@ -58,6 +58,9 @@ module TrackingNumber
       "#<%s:%#0x %s>" % [self.class.to_s, self.object_id, tracking_number]
     end
 
+    def uri
+      not_implemented
+    end
   end
 
   class Unknown < Base

@@ -25,6 +25,8 @@ Gem::Specification.new do |s|
   s.rubygems_version = %q{1.7.2}
   s.summary = %q{Identifies valid tracking numbers}
 
+  s.add_dependency('abstract')
+
   if s.respond_to? :specification_version then
     s.specification_version = 3
 

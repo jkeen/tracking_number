@@ -7,6 +7,15 @@ module TrackingNumber
       :ups
     end
 
+    def uri
+      _uri = URI('http://wwwapps.ups.com/WebTracking/track')
+      _uri.query = URI.encode_www_form({
+        :track     => 'yes',
+        :trackNums => tracking_number
+      })
+      return _uri
+    end
+
     def matches
        self.tracking_number.scan(VERIFY_PATTERN).flatten
     end

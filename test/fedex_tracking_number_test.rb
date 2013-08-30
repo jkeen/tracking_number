@@ -42,5 +42,13 @@ class FedExTrackingNumberTest < Test::Unit::TestCase
       end
     end
 
+    ["986578788855", "477179081230", "799531274483", "790535312317"].each do |valid_number|
+      should "return fedex tracking ur for #{valid_number}" do
+        tn = TrackingNumber.detect(valid_number)
+        assert tn.kind_of?(TrackingNumber::FedEx)
+        assert_equal tn.uri.to_s, "http://www.fedex.com/Tracking?action=track&tracknumbers=#{valid_number}"
+      end
+    end
+
   end
 end

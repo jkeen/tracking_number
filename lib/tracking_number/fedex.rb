@@ -3,6 +3,15 @@ module TrackingNumber
     def carrier
       :fedex
     end
+
+    def uri
+      _uri = URI('http://www.fedex.com/Tracking')
+      _uri.query = URI.encode_www_form({
+        :action       => 'track',
+        :tracknumbers => tracking_number
+      })
+      return _uri
+    end
   end
 
   class FedExExpress < FedEx
