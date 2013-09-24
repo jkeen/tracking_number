@@ -1,30 +1,10 @@
 require 'rubygems'
 require 'bundler'
 Bundler::GemHelper.install_tasks
-
-# if not defined?(Bundler)
-#   require 'bundler'
-#   begin
-#     Bundler.setup(:default, :development)
-#   rescue Bundler::BundlerError => e
-#     $stderr.puts e.message
-#     $stderr.puts "Run `bundle install` to install missing gems"
-#     exit e.status_code
-#   end
-# end
-
 require 'rake'
-
 require 'rake/testtask'
 Rake::TestTask.new(:test) do |test|
   test.libs << 'lib' << 'test'
-  test.pattern = 'test/**/*_test.rb'
-  test.verbose = true
-end
-
-require 'rcov/rcovtask'
-Rcov::RcovTask.new do |test|
-  test.libs << 'test'
   test.pattern = 'test/**/*_test.rb'
   test.verbose = true
 end
