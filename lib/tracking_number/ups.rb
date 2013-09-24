@@ -2,7 +2,7 @@ module TrackingNumber
   class UPS < Base
     SEARCH_PATTERN = /(\b1\s*Z\s*(\w\s*){16,16}\b)/
     VERIFY_PATTERN = /^1Z(\w{15,15})(\w)$/
-    
+
     def carrier
       :ups
     end
@@ -33,7 +33,7 @@ module TrackingNumber
     end
 
     def decode
-      {:shipper_account =>  self.tracking_number.to_s.slice(2...8), 
+      {:shipper_account =>  self.tracking_number.to_s.slice(2...8),
        :service_type => self.tracking_number.to_s.slice(8...10),
        :package_identifier =>  self.tracking_number.to_s.slice(10...17),
        :check_digit => self.tracking_number.to_s.slice(17, 18)
