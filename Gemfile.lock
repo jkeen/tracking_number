@@ -1,18 +1,22 @@
 PATH
   remote: .
   specs:
-    tracking_number (0.4.0)
+    tracking_number (0.5.0)
 
 GEM
   remote: http://rubygems.org/
   specs:
-    rcov (0.9.9)
+    multi_json (1.8.0)
     shoulda (2.11.3)
+    simplecov (0.7.1)
+      multi_json (~> 1.0)
+      simplecov-html (~> 0.7.1)
+    simplecov-html (0.7.1)
 
 PLATFORMS
   ruby
 
 DEPENDENCIES
-  rcov
   shoulda
+  simplecov
   tracking_number!
