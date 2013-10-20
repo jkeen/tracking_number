@@ -11,7 +11,7 @@ class USPSTrackingNumberTest < Test::Unit::TestCase
         should_detect_number_variants(valid_number, TrackingNumber::USPS91)
       end
     end
-    
+
     ["0307 1790 0005 2348 3741"].each do |valid_number|
       should "return usps with valid 20 digit number: #{valid_number}" do
         should_be_valid_number(valid_number, TrackingNumber::USPS20, :usps)

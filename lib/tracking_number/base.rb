@@ -15,16 +15,16 @@ module TrackingNumber
       valids.each do |t|
         uniques[t.tracking_number] = t unless uniques.has_key?(t.tracking_number)
       end
-      
+
       uniques.values
     end
-    
+
     def self.scan(body)
       patterns = [self.const_get("SEARCH_PATTERN")].flatten
       possibles = patterns.collect do |pattern|
         body.scan(pattern).uniq.flatten
       end
-      
+
       possibles.flatten.compact.uniq
     end
 
@@ -37,7 +37,7 @@ module TrackingNumber
     def valid_format?
       !matches.nil? && !matches.empty?
     end
-    
+
     def decode
       {}
     end

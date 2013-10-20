@@ -21,7 +21,7 @@ class FedExTrackingNumberTest < Test::Unit::TestCase
         should_detect_number_variants(valid_number, TrackingNumber::FedExGround96)
       end
     end
-    
+
     ["0414 4176 0228 964", "5682 8361 0012 000", "5682 8361 0012 734"].each do |valid_number|
       should "return fedex ground for #{valid_number}" do
         should_be_valid_number(valid_number, TrackingNumber::FedExGround, :fedex)
