@@ -58,6 +58,10 @@ module TrackingNumber
       "#<%s:%#0x %s>" % [self.class.to_s, self.object_id, tracking_number]
     end
 
+    # http://verysimple.com/2011/07/06/ups-tracking-url/
+    def self.uri
+      not_implemented
+    end
   end
 
   class Unknown < Base
