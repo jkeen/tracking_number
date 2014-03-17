@@ -10,6 +10,10 @@ require 'tracking_number/ups'
 require 'tracking_number/dhl'
 require 'tracking_number/ontrac'
 
+if defined?(ActiveModel::EachValidator)
+  require 'tracking_number/active_model_validator'
+end
+
 module TrackingNumber
   TYPES = [UPS, FedExExpress, FedExGround, FedExGround18, FedExGround96, USPS91, USPS20, USPS13, DHL, OnTrac]
 
