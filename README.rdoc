@@ -16,6 +16,20 @@ TrackingNumber.search("Lorem ipsum dolor sit amet, consectetur adipisicing elit,
 
 #=> [TrackingNumber, TrackingNumber]
 
+== ActiveModel validation
+
+For Rails 3 (or any ActiveModel client), validate your fields as a tracking number:
+
+    class Shipment < ActiveRecord::Base
+      validates :tracking, :tracking_number => true
+    end
+
+Sometimes it's helpful to have a "magic" tracking number that isn't valid for any of the real carriers, and maybe will have other side effects (e.g., special treatment of a shipping email.)
+
+    class Shipment < ActiveRecord::Base
+      validates :tracking, :tracking_number => { :except => 'magic-hand-delivery' }
+    end
+
 == Contributing to tracking_number
 
 * Check out the latest master to make sure the feature hasn't been implemented or the bug hasn't been fixed yet
