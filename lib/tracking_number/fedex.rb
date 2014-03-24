@@ -19,7 +19,7 @@ module TrackingNumber
       check = sequence.pop
       total = 0
       sequence.zip([3,1,7,3,1,7,3,1,7,3,1]).collect { |pair| pair[0].to_i * pair[1].to_i }.each { |t| total += t.to_i }
-      return (total % 11) == check.to_i
+      return (total % 11 % 10) == check.to_i
     end
   end
 
