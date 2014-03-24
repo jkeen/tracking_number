@@ -15,11 +15,12 @@ module TrackingNumber
     end
 
     def valid_checksum?
-      sequence = tracking_number.chars.to_a
-      check = sequence.pop
+      sequence, check_digit = matches
       total = 0
-      sequence.zip([3,1,7,3,1,7,3,1,7,3,1]).collect { |pair| pair[0].to_i * pair[1].to_i }.each { |t| total += t.to_i }
-      return (total % 11 % 10) == check.to_i
+      sequence.chars.to_a.zip([3,1,7,3,1,7,3,1,7,3,1]).each do |(a,b)|
+        total += a.to_i * b
+      end
+      return (total % 11 % 10) == check_digit.to_i
     end
   end
 
