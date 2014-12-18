@@ -1,6 +1,6 @@
 require 'test_helper'
 
-class FedExTrackingNumberTest < Test::Unit::TestCase
+class FedExTrackingNumberTest < Minitest::Test
   context "a FedEx tracking number" do
     ["986578788855", "477179081230", "799531274483", "790535312317", "974367662710"].each do |valid_number|
       should "return fedex express for #{valid_number}" do

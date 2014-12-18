@@ -1,7 +1,7 @@
 require 'simplecov'
 SimpleCov.start
 require 'rubygems'
-require 'test/unit'
+require 'minitest/autorun'
 require 'shoulda'
 require 'active_model'
 
@@ -9,7 +9,7 @@ $LOAD_PATH.unshift(File.join(File.dirname(__FILE__), '..', 'lib'))
 $LOAD_PATH.unshift(File.dirname(__FILE__))
 require 'tracking_number'
 
-class Test::Unit::TestCase
+class Minitest::Test
   def possible_numbers(tracking)
     tracking = tracking.to_s
     possible_numbers = []

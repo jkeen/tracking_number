@@ -1,6 +1,6 @@
 require 'test_helper'
 
-class TrackingNumberValidatorTest < Test::Unit::TestCase
+class TrackingNumberValidatorTest < Minitest::Test
   class Validatable
     include ActiveModel::Validations
     attr_accessor :tracking_number

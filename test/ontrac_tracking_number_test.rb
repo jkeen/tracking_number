@@ -1,6 +1,6 @@
 require 'test_helper'
 
-class OnTracTrackingNumberTest < Test::Unit::TestCase
+class OnTracTrackingNumberTest < Minitest::Test
   context "an OnTrac tracking number" do
     ["C11031500001879", "C10999911320231"].each do |valid_number|
       should "return ontrac for #{valid_number}" do
