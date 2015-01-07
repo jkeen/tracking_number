@@ -1,6 +1,6 @@
 require 'test_helper'
 
-class TrackingNumberTest < Test::Unit::TestCase
+class TrackingNumberTest < Minitest::Test
   context "a tracking number" do
     should "return unknown when given invalid number" do
       t = TrackingNumber.new("101")

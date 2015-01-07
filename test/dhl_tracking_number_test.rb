@@ -1,6 +1,6 @@
 require 'test_helper'
 
-class DHLTrackingNumberTest < Test::Unit::TestCase
+class DHLTrackingNumberTest < Minitest::Test
   context "a DHL tracking number" do
     ["73891051146"].each do |valid_number|
       should "return dhl for #{valid_number}" do

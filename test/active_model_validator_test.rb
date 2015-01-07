@@ -1,6 +1,6 @@
 require 'test_helper'
 
-class TrackingNumberValidatorTest < Test::Unit::TestCase
+class TrackingNumberValidatorTest < Minitest::Test
   class Validatable
     include ActiveModel::Validations
     attr_accessor :tracking_number
@@ -8,11 +8,12 @@ class TrackingNumberValidatorTest < Test::Unit::TestCase
     validates :tracking_number, :presence => true,
               :tracking_number => {
                 :exception => 'magic',
+                :except => 'witchcraft',
                 :message => ERROR_MESSAGE
               }
   end
   def test_valid_numbers
-    %w(magic 790535312317).each do |valid_tracking_number|
+    %w(magic witchcraft 790535312317).each do |valid_tracking_number|
       obj = Validatable.new
       obj.tracking_number = valid_tracking_number
       assert obj.valid?, "should allow tracking_number #{valid_tracking_number}"
