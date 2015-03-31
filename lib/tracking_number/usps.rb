@@ -6,13 +6,13 @@ module TrackingNumber
   end
 
   class USPS91 < USPS
-    SEARCH_PATTERN = [/(\b9\s*[145]\s*(([0-9]\s*){20,20}\b))/, /(\b([0-9]\s*){20,20}\b)/]
-    VERIFY_PATTERN = /^(9[145][0-9]{19,19})([0-9])$/
+    SEARCH_PATTERN = [/(\b9\s*[1345]\s*(([0-9]\s*){20,20}\b))/, /(\b([0-9]\s*){20,20}\b)/]
+    VERIFY_PATTERN = /^(9[1345][0-9]{19,19})([0-9])$/
 
     # Sometimes these numbers will appear without the leading 91 or 94, though, so we need to account for that case
 
     def decode
-      # Application ID: 91 or 94 or 95
+      # Application ID: 91 or 93 or 94 or 95
       # Service Code: 2 Digits
       # Mailer Id: 8 Digits
       # Package Id: 9 Digits
@@ -27,7 +27,7 @@ module TrackingNumber
     end
 
     def matches
-      if self.tracking_number =~ /^9[145]/
+      if self.tracking_number =~ /^9[1345]/
         self.tracking_number.scan(VERIFY_PATTERN).flatten
       else
         "91#{self.tracking_number}".scan(VERIFY_PATTERN).flatten
@@ -35,7 +35,7 @@ module TrackingNumber
     end
 
     def valid_checksum?
-      if self.tracking_number =~ /^9[145]/
+      if self.tracking_number =~ /^9[1345]/
         return true if weighted_usps_checksum_valid?(tracking_number)
       else
         if weighted_usps_checksum_valid?("91#{self.tracking_number}")
