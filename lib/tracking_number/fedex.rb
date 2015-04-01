@@ -40,12 +40,12 @@ module TrackingNumber
       sequence, check_digit = matches
 
       digits = ""
-      sequence.chars.to_a.map(&:to_i).reverse.each_with_index do |x, i|
+      sequence.chars.map(&:to_i).reverse.each_with_index do |x, i|
         x *= 2 if i.even?
         digits += x.to_s
       end
 
-      total = digits.chars.to_a.map(&:to_i).sum
+      total = digits.chars.to_a.map(&:to_i).reduce(:+)
 
       check = total % 10
       check = (10 - check) unless (check.zero?)
