@@ -42,5 +42,14 @@ class FedExTrackingNumberTest < Minitest::Test
       end
     end
 
+    ["61299998820821171811"].each do |valid_number|
+      should "return fedex smart post for #{valid_number}" do
+        should_be_valid_number(valid_number, TrackingNumber::FedExSmartPost, :fedex)
+      end
+
+      should "detect #{valid_number} regardless of spacing" do
+        should_detect_number_variants(valid_number, TrackingNumber::FedExSmartPost)
+      end
+    end
   end
 end

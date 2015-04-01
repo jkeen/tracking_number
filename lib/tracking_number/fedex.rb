@@ -25,8 +25,8 @@ module TrackingNumber
   end
 
   class FedExSmartPost < FedEx
-    SEARCH_PATTERN = /(\b([0-9]\s*){20,20}\b)/
-    VERIFY_PATTERN = /^([0-9]{5,5}[0-9]{14,14})([0-9])$/
+    SEARCH_PATTERN = /(\b([0-9]\s*){20}\b)/
+    VERIFY_PATTERN = /^([0-9]{5}[0-9]{14})([0-9])$/
     LENGTH = 20
 
     def matches
@@ -35,18 +35,15 @@ module TrackingNumber
 
     def valid_checksum?
       # http://stackoverflow.com/questions/15744704/how-to-calculate-a-fedex-smartpost-tracking-number-check-digit
-      # https://wiki.openmrs.org/display/docs/Check+Digit+Algorithm
 
-      sequence, check_digit = matches
+      sequence = "92#{tracking_number}".chars.to_a.map(&:to_i)
+      check_digit = sequence.pop
+      total = 0
 
-      digits = ""
-      sequence.chars.map(&:to_i).reverse.each_with_index do |x, i|
-        x *= 2 if i.even?
-        digits += x.to_s
+      sequence.reverse.each_with_index do |x, i|
+        x *= 3 if i.even?
+        total += x
       end
-
-      total = digits.chars.to_a.map(&:to_i).reduce(:+)
-
       check = total % 10
       check = (10 - check) unless (check.zero?)
 
@@ -157,5 +154,4 @@ module TrackingNumber
       return true if check == check_digit.to_i
     end
   end
-
 end
