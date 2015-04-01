@@ -6,28 +6,30 @@ module TrackingNumber
   end
 
   class USPS91 < USPS
-    SEARCH_PATTERN = [/(\b9\s*[145]\s*(([0-9]\s*){20,20}\b))/, /(\b([0-9]\s*){20,20}\b)/]
-    VERIFY_PATTERN = /^(9[145][0-9]{19,19})([0-9])$/
+    SEARCH_PATTERN = [/(\b(?:420\s*\d{5})?9\s*[1-5]\s*(?:(?:[0-9]\s*){20}\b))/, /(\b([0-9]\s*){20}\b)/]
+    VERIFY_PATTERN = /^(?:420\d{5})?(9[1-5][0-9]{19})([0-9])$/
 
-    # Sometimes these numbers will appear without the leading 91 or 94, though, so we need to account for that case
+    # Sometimes these numbers will appear without the leading 91, 93, or 94, though, so we need to account for that case
 
     def decode
-      # Application ID: 91 or 94 or 95
+      # Application ID: 91, 93, 94 or 95
       # Service Code: 2 Digits
       # Mailer Id: 8 Digits
       # Package Id: 9 Digits
       # Checksum: 1 Digit
 
-      {:application_id => self.tracking_number.to_s.slice(0...2),
-       :service_code =>  self.tracking_number.to_s.slice(2...4),
-       :mailer_id => self.tracking_number.to_s.slice(4...12),
-       :package_identifier =>  self.tracking_number.to_s.slice(12...21),
-       :check_digit => self.tracking_number.slice(21...22)
+      base_tracking_number = self.tracking_number.to_s.gsub(/^420\d{5}/, '')
+
+      {:application_id => base_tracking_number.to_s.slice(0...2),
+       :service_code =>  base_tracking_number.to_s.slice(2...4),
+       :mailer_id => base_tracking_number.to_s.slice(4...12),
+       :package_identifier =>  base_tracking_number.to_s.slice(12...21),
+       :check_digit => base_tracking_number.slice(21...22)
       }
     end
 
     def matches
-      if self.tracking_number =~ /^9[145]/
+      if self.tracking_number =~ /^(420\d{5})?9[1-5]/
         self.tracking_number.scan(VERIFY_PATTERN).flatten
       else
         "91#{self.tracking_number}".scan(VERIFY_PATTERN).flatten
@@ -35,7 +37,7 @@ module TrackingNumber
     end
 
     def valid_checksum?
-      if self.tracking_number =~ /^9[145]/
+      if self.tracking_number =~ /^(420\d{5})?9[1-5]/
         return true if weighted_usps_checksum_valid?(tracking_number)
       else
         if weighted_usps_checksum_valid?("91#{self.tracking_number}")
@@ -49,7 +51,7 @@ module TrackingNumber
     private
 
     def weighted_usps_checksum_valid?(sequence)
-      chars = sequence.chars.to_a
+      chars = sequence.gsub(/^420\d{5}/, '').chars.to_a
       check_digit = chars.pop
 
       total = 0
