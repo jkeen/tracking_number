@@ -31,5 +31,11 @@ class USPSTrackingNumberTest < Minitest::Test
         should_detect_number_variants(valid_number, TrackingNumber::USPS13)
       end
     end
+
+    ["420221539101026837331000039521"].each do |valid_number|
+      should "return usps with valid 30 digit number: #{valid_number}" do
+        should_be_valid_number(valid_number, TrackingNumber::USPS91, :usps)
+      end
+    end
   end
 end
