@@ -24,6 +24,33 @@ module TrackingNumber
     end
   end
 
+  class FedExSmartPost < FedEx
+    SEARCH_PATTERN = /(\b([0-9]\s*){20}\b)/
+    VERIFY_PATTERN = /^([0-9]{5}[0-9]{14})([0-9])$/
+    LENGTH = 20
+
+    def matches
+      self.tracking_number.scan(VERIFY_PATTERN).flatten
+    end
+
+    def valid_checksum?
+      # http://stackoverflow.com/questions/15744704/how-to-calculate-a-fedex-smartpost-tracking-number-check-digit
+
+      sequence = "92#{tracking_number}".chars.to_a.map(&:to_i)
+      check_digit = sequence.pop
+      total = 0
+
+      sequence.reverse.each_with_index do |x, i|
+        x *= 3 if i.even?
+        total += x
+      end
+      check = total % 10
+      check = (10 - check) unless (check.zero?)
+
+      return true if check == check_digit.to_i
+    end
+  end
+
   #TODO Fix these FedEx ground numberss
 
   class FedExGround96 < FedEx
@@ -127,5 +154,4 @@ module TrackingNumber
       return true if check == check_digit.to_i
     end
   end
-
 end
