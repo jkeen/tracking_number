@@ -42,7 +42,7 @@ class FedExTrackingNumberTest < Minitest::Test
       end
     end
 
-    ["61299998820821171811"].each do |valid_number|
+    ['61299998820821171811', '9261292700768711948021'].each do |valid_number|
       should "return fedex smart post for #{valid_number}" do
         should_be_valid_number(valid_number, TrackingNumber::FedExSmartPost, :fedex)
       end
