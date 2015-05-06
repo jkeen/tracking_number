@@ -37,5 +37,11 @@ class USPSTrackingNumberTest < Minitest::Test
         should_be_valid_number(valid_number, TrackingNumber::USPS91, :usps)
       end
     end
+
+    ["92748931507708513018050063"].each do |valid_number|
+      should "return usps with valid 26 digit number: #{valid_number}" do
+        should_be_valid_number(valid_number, TrackingNumber::USPS91, :usps)
+      end
+    end
   end
 end
