@@ -58,6 +58,10 @@ class USPSTrackingNumberTest < Minitest::Test
       should "return usps with valid 26 digit number: #{valid_number}" do
         should_be_valid_number(valid_number, TrackingNumber::USPS91, :usps)
       end
+
+      should "fail on check digit changes on #{valid_number}" do
+        should_fail_on_check_digit_changes(valid_number)
+      end
     end
   end
 end
