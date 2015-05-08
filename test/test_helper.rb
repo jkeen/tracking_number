@@ -45,7 +45,7 @@ class Minitest::Test
   end
 
   def should_fail_on_check_digit_changes(valid_number)
-    digits = valid_number.chars
+    digits = valid_number.chars.to_a
     last = digits.pop.to_i
     digits << (last  < 2 ? last + 3 : last - 3).to_s
     invalid_number = digits.join
