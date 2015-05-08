@@ -6,8 +6,8 @@ module TrackingNumber
   end
 
   class USPS91 < USPS
-    SEARCH_PATTERN = [/(\b(?:420\s*\d{5})?9\s*[1-5]\s*(?:(?:[0-9]\s*){20}\b))/, /(\b([0-9]\s*){20}\b)/]
-    VERIFY_PATTERN = /^(?:420\d{5})?(9[1-5][0-9]{19})([0-9])$/
+    SEARCH_PATTERN = [/(\b(?:420\s*\d{5})?9\s*[1-5]\s*(?:(?:(?:[0-9]\s*){20}\b)|(?:(?:[0-9]\s*){24}\b)))/, /(\b([0-9]\s*){20}\b)/]
+    VERIFY_PATTERN = /^(?:420\d{5})?(9[1-5](?:[0-9]{19}|[0-9]{23}))([0-9])$/
 
     # Sometimes these numbers will appear without the leading 91, 93, or 94, though, so we need to account for that case
 
