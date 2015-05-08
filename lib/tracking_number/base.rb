@@ -57,7 +57,6 @@ module TrackingNumber
     def inspect
       "#<%s:%#0x %s>" % [self.class.to_s, self.object_id, tracking_number]
     end
-
   end
 
   class Unknown < Base

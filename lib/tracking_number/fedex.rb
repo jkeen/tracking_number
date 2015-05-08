@@ -36,11 +36,10 @@ module TrackingNumber
       # http://stackoverflow.com/questions/15744704/how-to-calculate-a-fedex-smartpost-tracking-number-check-digit
 
       @tracking_number = "92#{tracking_number}" unless tracking_number =~ /^92/
-
       sequence = @tracking_number.chars.map(&:to_i)
       check_digit = sequence.pop
-      total = 0
 
+      total = 0
       sequence.reverse.each_with_index do |x, i|
         x *= 3 if i.even?
         total += x

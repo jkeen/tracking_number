@@ -7,6 +7,10 @@ class USPSTrackingNumberTest < Minitest::Test
         should_be_valid_number(valid_number, TrackingNumber::USPS91, :usps)
       end
 
+      should "fail on check digit changes on #{valid_number}" do
+        should_fail_on_check_digit_changes(valid_number)
+      end
+
       should "detect #{valid_number} regardless of spacing" do
         should_detect_number_variants(valid_number, TrackingNumber::USPS91)
       end
@@ -15,6 +19,10 @@ class USPSTrackingNumberTest < Minitest::Test
     ["0307 1790 0005 2348 3741"].each do |valid_number|
       should "return usps with valid 20 digit number: #{valid_number}" do
         should_be_valid_number(valid_number, TrackingNumber::USPS20, :usps)
+      end
+
+      should "fail on check digit changes on #{valid_number}" do
+        should_fail_on_check_digit_changes(valid_number)
       end
 
       should "detect #{valid_number} regardless of spacing" do
@@ -27,6 +35,10 @@ class USPSTrackingNumberTest < Minitest::Test
         should_be_valid_number(valid_number, TrackingNumber::USPS13, :usps)
       end
 
+      should "fail on check digit changes on #{valid_number}" do
+        should_fail_on_check_digit_changes(valid_number)
+      end
+
       should "detect #{valid_number} regardless of spacing" do
         should_detect_number_variants(valid_number, TrackingNumber::USPS13)
       end
@@ -35,6 +47,10 @@ class USPSTrackingNumberTest < Minitest::Test
     ["420221539101026837331000039521"].each do |valid_number|
       should "return usps with valid 30 digit number: #{valid_number}" do
         should_be_valid_number(valid_number, TrackingNumber::USPS91, :usps)
+      end
+
+      should "fail on check digit changes on #{valid_number}" do
+        should_fail_on_check_digit_changes(valid_number)
       end
     end
   end

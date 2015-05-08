@@ -7,6 +7,10 @@ class OnTracTrackingNumberTest < Minitest::Test
         should_be_valid_number(valid_number, TrackingNumber::OnTrac, :ontrac)
       end
 
+      should "fail on check digit changes on #{valid_number}" do
+        should_fail_on_check_digit_changes(valid_number)
+      end
+
       should "detect #{valid_number} regardless of spacing" do
         should_detect_number_variants(valid_number, TrackingNumber::OnTrac)
       end
