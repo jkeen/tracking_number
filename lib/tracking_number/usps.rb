@@ -148,4 +148,19 @@ module TrackingNumber
       return check == check_digit
     end
   end
+
+  class USPSTest < USPS
+    # USPS Test Number From Easypost. IE: 9499 9071 2345 6123 4567 81
+    SEARCH_PATTERN = /(\b([0-9]\s*){22,22}\b)/
+    VERIFY_PATTERN = SEARCH_PATTERN
+
+    def matches
+      self.tracking_number.scan(VERIFY_PATTERN).flatten
+    end
+
+    def valid_checksum?
+      sequence = tracking_number.scan(/[0-9]+/).flatten.join
+      return sequence == "9499907123456123456781"
+    end
+  end
 end

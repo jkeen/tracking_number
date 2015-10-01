@@ -89,4 +89,20 @@ module TrackingNumber
       end
     end
   end
+
+  class UPSTest < UPS
+    # Easypost UPS test numbers as described here:
+    # https://www.easypost.com/docs/api#tracking (scroll down a bit).
+    SEARCH_PATTERN = /^EZ(\d)00000000\1$/
+    VERIFY_PATTERN = SEARCH_PATTERN
+
+    def matches
+      self.tracking_number.scan(VERIFY_PATTERN).flatten
+    end
+
+    def valid_checksum?
+      sequence = tracking_number.scan(/[a-zA-Z0-9]+/).flatten.join
+      return sequence =~ /EZ(\d)00000000\1/
+    end
+  end
 end
