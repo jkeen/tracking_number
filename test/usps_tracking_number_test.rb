@@ -63,5 +63,11 @@ class USPSTrackingNumberTest < Minitest::Test
         should_fail_on_check_digit_changes(valid_number)
       end
     end
+
+    ["9499907123456123456781", "94999 07123 45612 34567 81"].each do |valid_number|
+      should "return usps with test 22 digit number: #{valid_number}" do
+        should_be_valid_number(valid_number, TrackingNumber::USPSTest, :usps)
+      end
+    end
   end
 end
