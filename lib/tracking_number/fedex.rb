@@ -52,8 +52,6 @@ module TrackingNumber
     end
   end
 
-  #TODO Fix these FedEx ground numberss
-
   class FedExGround96 < FedEx
     SEARCH_PATTERN = /(\b9\s*6\s*([0-9]\s*){20,20}\b)/
     VERIFY_PATTERN = /^96[0-9]{5,5}([0-9]{14,14})([0-9])$/
