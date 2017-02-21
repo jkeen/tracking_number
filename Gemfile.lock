@@ -1,7 +1,7 @@
 PATH
   remote: .
   specs:
-    tracking_number (0.10.2)
+    tracking_number (0.10.3)
 
 GEM
   remote: http://rubygems.org/
@@ -47,3 +47,6 @@ DEPENDENCIES
   shoulda
   simplecov
   tracking_number!
+
+BUNDLED WITH
+   1.11.2

@@ -9,12 +9,11 @@ Gem::Specification.new do |s|
 
   s.required_rubygems_version = Gem::Requirement.new(">= 0") if s.respond_to? :required_rubygems_version=
   s.authors = ["Jeff Keen"]
-  s.date = %q{2011-04-26}
-  s.description = %q{Match tracking numbers to a service, and search blocks of text and pull out valid tracking numbers.}
+  s.date = %q{2017-02-21}
+  s.description = %q{This gem identifies valid tracking numbers and the service they're associated with. It can also tell you a little bit about the package purely from the number—there's quite a bit of info tucked away into those numbers, it turns out.}
   s.email = %q{jeff@keen.me}
   s.extra_rdoc_files = [
     "LICENSE.txt",
-    "README.rdoc"
   ]
   s.files         = `git ls-files`.split("\n")
   s.test_files    = `git ls-files -- {test,spec,features}/*`.split("\n")
@@ -31,4 +30,3 @@ Gem::Specification.new do |s|
   s.add_development_dependency('activemodel')
   s.add_development_dependency('minitest','~> 5.5')
 end
-
