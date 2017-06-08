@@ -1,3 +1,30 @@
+# 9341989692090075346172, 9341989675090049647994
+# 9400110699047012542640, 9400110200828675856233
+
+# USPS Tracking®
+# => 9400 1000 0000 0000 0000 00
+
+# 9249090109401231618933, 9249090109401231618933
+
+# Priority Mail®
+# => 9205 5000 0000 0000 0000 00
+
+# Certified Mail®
+# => 9407 3000 0000 0000 0000 00
+
+# Collect On Delivery Hold For Pickup
+# => 9303 3000 0000 0000 0000 00
+
+# Global Express Guaranteed®	82 000 000 00
+
+# Priority Mail Express®
+# => 9270 1000 0000 0000 0000 00
+
+# Registered Mail™
+# => 9208 8000 0000 0000 0000 00
+# Signature Confirmation™
+# => 9202 1000 0000 0000 0000 00
+
 module TrackingNumber
   class USPS < Base
     def carrier
@@ -75,10 +102,6 @@ module TrackingNumber
     SEARCH_PATTERN = /(\b([0-9]\s*){20,20}\b)/
     VERIFY_PATTERN = /^([0-9]{2,2})([0-9]{9,9})([0-9]{8,8})([0-9])$/
 
-    def matches
-      self.tracking_number.scan(VERIFY_PATTERN).flatten
-    end
-
     def decode
       {:service_code =>  self.tracking_number.to_s.slice(0...2),
        :mailer_id => self.tracking_number.to_s.slice(2...11),
@@ -117,35 +140,47 @@ module TrackingNumber
     end
   end
 
+  # Priority Mail Express International®
+  # => EC 000 000 000 US
+
+  # Priority Mail International®
+  # => CP 000 000 000 US
+
+  # Priority Mail Express
+  # => EA 000 000 000 US
+
   class USPS13 < USPS
+    include Checksum::Mod11With8642357Weighting
+
     SEARCH_PATTERN = /(\b([A-Z]\s*){2,2}([0-9]\s*){9,9}([A-Z]\s*){2,2}\b)/
     VERIFY_PATTERN = /^([A-Z]{2,2})([0-9]{9,9})([A-Z]{2,2})$/
 
-    def matches
-      self.tracking_number.scan(VERIFY_PATTERN).flatten
+    def decode
+      {:service_code => self.tracking_number.to_s.slice(0...2),
+       :package_identifier =>  self.tracking_number.to_s.slice(3...10),
+       :check_digit => self.tracking_number.slice(11...11),
+       :shipped_from => self.tracking_number.slice(12...13)
+      }
     end
 
-    def valid_checksum?
-      sequence = tracking_number.scan(/[0-9]+/).flatten.join
-      chars = sequence.chars.to_a
-      check_digit = chars.pop.to_i
-
-      sum = 0
-      chars.zip([8,6,4,2,3,5,9,7]).each do |pair|
-        sum += (pair[0].to_i * pair[1].to_i)
+    def service_type
+      case decode[:service_code]
+      when "EC"
+        "Priority Mail Express International"
+      when "CP"
+        "Priority Mail International"
+      when "EA"
+        "Priority Mail Express"
       end
+    end
 
-      remainder = sum % 11
-      check = case remainder
-      when 1
-        0
-      when 0
-        5
-      else
-        11 - remainder
-      end
+    def valid_optional_checks?
+      identifier = self.tracking_number.to_s.slice(0...1)
+      valid_starting_letters = %w(R A E D T V C L G M)
 
-      return check == check_digit
+      return false unless valid_starting_letters.include?(identifier)
+      return false unless self.tracking_number.end_with?("US")
+      return true
     end
   end
 
@@ -153,10 +188,6 @@ module TrackingNumber
     # USPS Test Number From Easypost. IE: 9499 9071 2345 6123 4567 81
     SEARCH_PATTERN = /(\b([0-9]\s*){22,22}\b)/
     VERIFY_PATTERN = SEARCH_PATTERN
-
-    def matches
-      self.tracking_number.scan(VERIFY_PATTERN).flatten
-    end
 
     def valid_checksum?
       sequence = tracking_number.scan(/[0-9]+/).flatten.join

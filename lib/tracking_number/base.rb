@@ -1,3 +1,5 @@
+require 'checksum'
+require 'pry'
 module TrackingNumber
   class Base
     attr_accessor :tracking_number
@@ -31,6 +33,7 @@ module TrackingNumber
     def valid?
       return false unless valid_format?
       return false unless valid_checksum?
+      return false unless valid_optional_checks?
       return true
     end
 
@@ -43,7 +46,15 @@ module TrackingNumber
     end
 
     def matches
-      []
+      if self.class.constants.include?(:VERIFY_PATTERN)
+        self.tracking_number.scan(self.class.const_get("VERIFY_PATTERN")).flatten
+      else
+        []
+      end
+    end
+
+    def valid_optional_checks?
+      true
     end
 
     def valid_checksum?

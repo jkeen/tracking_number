@@ -10,10 +10,6 @@ module TrackingNumber
     VERIFY_PATTERN = /^([0-9]{11,11})([0-9])$/
     LENGTH = 12
 
-    def matches
-      self.tracking_number.scan(VERIFY_PATTERN).flatten
-    end
-
     def valid_checksum?
       sequence, check_digit = matches
       total = 0
@@ -27,10 +23,6 @@ module TrackingNumber
   class FedExSmartPost < FedEx
     SEARCH_PATTERN = /(\b(?:9\s*2\s*)?([0-9]\s*){20}\b)/
     VERIFY_PATTERN = /^((?:92)?[0-9]{5}[0-9]{14})([0-9])$/
-
-    def matches
-      self.tracking_number.scan(VERIFY_PATTERN).flatten
-    end
 
     def valid_checksum?
       # http://stackoverflow.com/questions/15744704/how-to-calculate-a-fedex-smartpost-tracking-number-check-digit
@@ -56,10 +48,6 @@ module TrackingNumber
     SEARCH_PATTERN = /(\b9\s*6\s*([0-9]\s*){20,20}\b)/
     VERIFY_PATTERN = /^96[0-9]{5,5}([0-9]{14,14})([0-9])$/
     LENGTH = 22
-
-    def matches
-      self.tracking_number.scan(VERIFY_PATTERN).flatten
-    end
 
     def decode
       {:application_id => self.tracking_number.to_s.slice(0...2),
@@ -122,10 +110,6 @@ module TrackingNumber
     SEARCH_PATTERN = /(\b([0-9]\s*){18,18}\b)/
     VERIFY_PATTERN = /^[0-9]{2,2}([0-9]{15,15})([0-9])$/
     LENGTH = 20
-
-    def matches
-      self.tracking_number.scan(VERIFY_PATTERN).flatten
-    end
 
     def decode
       {:application_id => self.tracking_number.to_s.slice(0...2),

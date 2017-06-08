@@ -1,35 +1,12 @@
 module TrackingNumber
   class UPS < Base
+    include Checksum::Mod10
+
     SEARCH_PATTERN = /(\b1\s*Z\s*(\w\s*){16,16}\b)/
     VERIFY_PATTERN = /^1Z(\w{15,15})(\w)$/
 
     def carrier
       :ups
-    end
-
-    def matches
-       self.tracking_number.scan(VERIFY_PATTERN).flatten
-    end
-
-    def valid_checksum?
-      sequence = tracking_number.slice(2...17)
-      check_digit = tracking_number.slice(17, 18)
-
-      total = 0
-      sequence.chars.each_with_index do |c, i|
-        x = if c[/[0-9]/] # numeric
-          c.to_i
-        else
-          (c[0].ord - 3) % 10
-        end
-        x *= 2 if i.odd?
-        total += x
-      end
-
-      check = (total % 10)
-      check = (10 - check) unless (check.zero?)
-
-      return (check.to_i == check_digit.to_i)
     end
 
     def decode
@@ -95,10 +72,6 @@ module TrackingNumber
     # https://www.easypost.com/docs/api#tracking (scroll down a bit).
     SEARCH_PATTERN = /^EZ(\d)00000000\1$/
     VERIFY_PATTERN = SEARCH_PATTERN
-
-    def matches
-      self.tracking_number.scan(VERIFY_PATTERN).flatten
-    end
 
     def valid_checksum?
       sequence = tracking_number.scan(/[a-zA-Z0-9]+/).flatten.join

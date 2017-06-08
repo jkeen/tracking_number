@@ -15,7 +15,14 @@ if defined?(ActiveModel::EachValidator)
 end
 
 module TrackingNumber
-  TYPES = [UPS, UPSTest, FedExExpress, FedExSmartPost, FedExGround, FedExGround18, FedExGround96, USPS91, USPS20, USPS13, USPSTest, DHLExpress, DHLExpressAir, OnTrac]
+  TYPES = [
+    UPS, UPSTest,
+    FedExExpress, FedExSmartPost, FedExGround, FedExGround18, FedExGround96,
+    USPS91, USPS20, USPS13, USPSTest,
+    DHLExpress, DHLExpressAir,
+    RoyalMail,
+    OnTrac,
+    USPS13]
 
   def self.search(body)
     TYPES.collect { |type| type.search(body) }.flatten
