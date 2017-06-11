@@ -1,6 +1,6 @@
 require 'test_helper'
 
-class OnTracTrackingNumberTest < Minitest::Test
+class RoyalMailTrackingTest < Minitest::Test
   context "a royal mail tracking number" do
     ["FF070621885GB", "TT222209017GB", "TT327219141GB"].each do |valid_number|
       should "return royal_mail for #{valid_number}" do

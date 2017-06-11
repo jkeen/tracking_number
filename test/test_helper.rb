@@ -33,7 +33,7 @@ class Minitest::Test
   def should_detect_number_variants(valid_number, type)
     possible_strings(valid_number).each do |string|
       results = type.search(string)
-      assert_equal 1, results.size, "could not find #{type} #{valid_number} in #{string}"
+      assert_equal 1, results.size, "could not find #{type} #{valid_number} in #{string} using search regex: #{type::SEARCH_PATTERN}"
     end
   end
 

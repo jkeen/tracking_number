@@ -4,45 +4,45 @@ module TrackingNumber
       :fedex
     end
   end
-
-  class FedExExpress < FedEx
-    SEARCH_PATTERN = /(\b([0-9]\s*){12,12}\b)/
-    VERIFY_PATTERN = /^([0-9]{11,11})([0-9])$/
-    LENGTH = 12
-
-    def valid_checksum?
-      sequence, check_digit = matches
-      total = 0
-      sequence.chars.to_a.zip([3,1,7,3,1,7,3,1,7,3,1]).each do |(a,b)|
-        total += a.to_i * b
-      end
-      return (total % 11 % 10) == check_digit.to_i
-    end
-  end
-
-  class FedExSmartPost < FedEx
-    SEARCH_PATTERN = /(\b(?:9\s*2\s*)?([0-9]\s*){20}\b)/
-    VERIFY_PATTERN = /^((?:92)?[0-9]{5}[0-9]{14})([0-9])$/
-
-    def valid_checksum?
-      # http://stackoverflow.com/questions/15744704/how-to-calculate-a-fedex-smartpost-tracking-number-check-digit
-
-      @tracking_number = "92#{tracking_number}" unless tracking_number =~ /^92/
-      sequence = @tracking_number.chars.map(&:to_i)
-      check_digit = sequence.pop
-
-      total = 0
-      sequence.reverse.each_with_index do |x, i|
-        x *= 3 if i.even?
-        total += x
-      end
-
-      check = total % 10
-      check = (10 - check) unless (check.zero?)
-
-      return true if check == check_digit.to_i
-    end
-  end
+  #
+  # class FedExExpress < FedEx
+  #   SEARCH_PATTERN = /(\b([0-9]\s*){12,12}\b)/
+  #   VERIFY_PATTERN = /^([0-9]{11,11})([0-9])$/
+  #   LENGTH = 12
+  #
+  #   def valid_checksum?
+  #     sequence, check_digit = matches
+  #     total = 0
+  #     sequence.chars.to_a.zip([3,1,7,3,1,7,3,1,7,3,1]).each do |(a,b)|
+  #       total += a.to_i * b
+  #     end
+  #     return (total % 11 % 10) == check_digit.to_i
+  #   end
+  # end
+  #
+  # class FedExSmartPost < FedEx
+  #   SEARCH_PATTERN = /(\b(?:9\s*2\s*)?([0-9]\s*){20}\b)/
+  #   VERIFY_PATTERN = /^((?:92)?[0-9]{5}[0-9]{14})([0-9])$/
+  #
+  #   def valid_checksum?
+  #     # http://stackoverflow.com/questions/15744704/how-to-calculate-a-fedex-smartpost-tracking-number-check-digit
+  #
+  #     @tracking_number = "92#{tracking_number}" unless tracking_number =~ /^92/
+  #     sequence = @tracking_number.chars.map(&:to_i)
+  #     check_digit = sequence.pop
+  #
+  #     total = 0
+  #     sequence.reverse.each_with_index do |x, i|
+  #       x *= 3 if i.even?
+  #       total += x
+  #     end
+  #
+  #     check = total % 10
+  #     check = (10 - check) unless (check.zero?)
+  #
+  #     return true if check == check_digit.to_i
+  #   end
+  # end
 
   class FedExGround96 < FedEx
     SEARCH_PATTERN = /(\b9\s*6\s*([0-9]\s*){20,20}\b)/
