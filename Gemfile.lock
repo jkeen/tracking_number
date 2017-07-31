@@ -49,6 +49,7 @@ PLATFORMS
 
 DEPENDENCIES
   activemodel
+  activesupport (~> 4.2)
   json
   minitest (~> 5.5)
   pry

@@ -1,5 +1,7 @@
-require 'checksum'
+require 'checksum_validations'
 require 'pry'
+require 'active_support'
+
 module TrackingNumber
   class Base
     attr_accessor :tracking_number
@@ -11,7 +13,7 @@ module TrackingNumber
     end
 
     def self.search(body)
-      valids = self.scan(body).uniq.collect { |possible| new(possible) }.select { |t| t.valid? }
+      valids = self.scan(body.gsub(' ','')).uniq.collect { |possible| new(possible) }.select { |t| t.valid? }
 
       uniques = {}
       valids.each do |t|
@@ -24,10 +26,26 @@ module TrackingNumber
     def self.scan(body)
       patterns = [self.const_get("SEARCH_PATTERN")].flatten
       possibles = patterns.collect do |pattern|
-        body.scan(pattern).uniq.flatten
+        body.scan(pattern).uniq.collect { |a| a.join("") }
       end
 
       possibles.flatten.compact.uniq
+    end
+
+    def service_type
+
+    end
+
+    def package_info
+
+    end
+
+    def destination
+
+    end
+
+    def shipper_info
+
     end
 
     def valid?
@@ -37,20 +55,26 @@ module TrackingNumber
       return true
     end
 
-    def valid_format?
-      !matches.nil? && !matches.empty?
-    end
-
     def decode
-      {}
+      decoded = {}
+      self.matches.names.each do |name|
+        sym = name.underscore.to_sym
+        decoded[sym] = self.matches[name]
+      end
+
+      decoded
     end
 
     def matches
       if self.class.constants.include?(:VERIFY_PATTERN)
-        self.tracking_number.scan(self.class.const_get("VERIFY_PATTERN")).flatten
+        self.tracking_number.match(self.class.const_get("VERIFY_PATTERN"))
       else
         []
       end
+    end
+
+    def valid_format?
+      !matches.nil?
     end
 
     def valid_optional_checks?
