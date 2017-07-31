@@ -24,7 +24,7 @@ module TrackingNumber
     end
 
     def self.scan(body)
-      patterns = [self.const_get("SEARCH_PATTERN")].flatten
+      patterns = [self.const_get(:SEARCH_PATTERN)].flatten
       possibles = patterns.collect do |pattern|
         body.scan(pattern).uniq.collect { |a| a.join("") }
       end
@@ -32,20 +32,49 @@ module TrackingNumber
       possibles.flatten.compact.uniq
     end
 
-    def service_type
+    def serial_number
+      return self.matches["SerialNumber"] unless self.class.const_get("VALIDATION")
 
+      format_info   = self.class.const_get(:VALIDATION)[:serial_number_format]
+      raw_serial    = self.matches["SerialNumber"]
+
+      if format_info
+        if to_prepend = format_info[:prepend_if_missing]
+          "#{to_prepend}#{raw_serial}" if raw_serial && !raw_serial.start_with?(to_prepend)
+        end
+      else
+        raw_serial
+      end
+    end
+
+    def courier_code
+      self.class.const_get(:COURIER_CODE).to_sym
+    end
+
+    alias_method :carrier, :courier_code
+
+    def check_digit
+      self.matches["CheckDigit"]
+    end
+
+    def courier
+      matching_additional["Courier"]
+    end
+
+    def service_type
+      matching_additional["Service Type"]
     end
 
     def package_info
-
+      self.matches["ContainerType"]
     end
 
     def destination
-
+      self.matches["DestinationZip"]
     end
 
     def shipper_info
-
+      self.matches["ShipperInfo"]
     end
 
     def valid?
@@ -67,7 +96,7 @@ module TrackingNumber
 
     def matches
       if self.class.constants.include?(:VERIFY_PATTERN)
-        self.tracking_number.match(self.class.const_get("VERIFY_PATTERN"))
+        self.tracking_number.match(self.class.const_get(:VERIFY_PATTERN))
       else
         []
       end
@@ -82,7 +111,13 @@ module TrackingNumber
     end
 
     def valid_checksum?
-      false
+      return false unless self.valid_format?
+
+      checksum_info   = self.class.const_get(:VALIDATION)[:checksum]
+      name            = checksum_info[:name]
+      method_name     = "validates_#{name}?"
+
+      ChecksumValidations.send(method_name, serial_number, check_digit, checksum_info)
     end
 
     def to_s
@@ -92,11 +127,46 @@ module TrackingNumber
     def inspect
       "#<%s:%#0x %s>" % [self.class.to_s, self.object_id, tracking_number]
     end
+
+    def matching_additional
+      additional = self.class.const_get(:ADDITIONAL)
+
+      relevant_sections = {}
+
+      additional.each do |info|
+        if value = self.matches[info[:regex_group_name]]
+          # has matching value
+          matches = info[:lookup].find do |info|
+            if info[:matches]
+              value == info[:matches]
+            elsif info[:matches_regex]
+              value =~ Regexp.new(info[:matches_regex])
+            end
+          end
+
+          relevant_sections[info[:name]] = matches
+        end
+      end
+
+      relevant_sections
+    end
   end
 
   class Unknown < Base
-    def carrier
+    def courier
       :unknown
+    end
+
+    def valid?
+      false
+    end
+
+    def valid_format?
+      false
+    end
+
+    def valid_checksum?
+      false
     end
   end
 end

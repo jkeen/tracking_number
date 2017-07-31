@@ -22,7 +22,7 @@ module ChecksumValidations
     end
 
     def validates_sum_product_with_weightings_and_modulo?(sequence, check_digit, extras = {})
-      weighting = extras[:weighting] || []
+      weighting = extras[:weightings] || []
 
       total = 0
       sequence.chars.to_a.zip(weighting).each do |(a,b)|
@@ -40,8 +40,11 @@ module ChecksumValidations
           (c[0].ord - 3) % 10
         end
 
-        x *= extras[:odds_multiplier].to_i if extras[:odds_multipler] && i.odd?
-        x *= extras[:evens_multiplier].to_i if extras[:evens_multipler] && i.even?
+        if extras[:odds_multiplier] && i.odd?
+          x *= extras[:odds_multiplier].to_i
+        elsif extras[:evens_multipler] && i.even?
+          x *= extras[:evens_multiplier].to_i
+        end
 
         total += x
       end
