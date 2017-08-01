@@ -42,7 +42,7 @@ module ChecksumValidations
 
         if extras[:odds_multiplier] && i.odd?
           x *= extras[:odds_multiplier].to_i
-        elsif extras[:evens_multipler] && i.even?
+        elsif extras[:evens_multiplier] && i.even?
           x *= extras[:evens_multiplier].to_i
         end
 

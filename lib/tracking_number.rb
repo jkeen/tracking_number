@@ -39,12 +39,12 @@ Dir.glob(File.join(File.dirname(__FILE__), "data/couriers/*.json")).each do |fil
     pattern = tracking_info[:regex]
     pattern = tracking_info[:regex].join if tracking_info[:regex].is_a?(Array)
 
-    verify_pattern = "^(#{pattern})$"
-    search_pattern = "\b*(#{pattern})\b*"
+    verify_pattern = "^#{pattern}$"
+    search_pattern = "\\b#{pattern}\\b"
 
     klass.const_set("COURIER_CODE", courier_code)
-    klass.const_set("SEARCH_PATTERN", Regexp.new("\b*(#{pattern})\b*"))
-    klass.const_set("VERIFY_PATTERN", Regexp.new("^(#{pattern})$"))
+    klass.const_set("SEARCH_PATTERN", Regexp.new(search_pattern))
+    klass.const_set("VERIFY_PATTERN", Regexp.new(verify_pattern))
 
     klass.const_set("VALIDATION", tracking_info[:validation])
     klass.const_set("ADDITIONAL", tracking_info[:additional])

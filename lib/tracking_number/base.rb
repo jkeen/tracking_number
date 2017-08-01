@@ -13,7 +13,7 @@ module TrackingNumber
     end
 
     def self.search(body)
-      valids = self.scan(body.gsub(' ','')).uniq.collect { |possible| new(possible) }.select { |t| t.valid? }
+      valids = self.scan(body).uniq.collect { |possible| new(possible) }.select { |t| t.valid? }
 
       uniques = {}
       valids.each do |t|
@@ -26,25 +26,33 @@ module TrackingNumber
     def self.scan(body)
       patterns = [self.const_get(:SEARCH_PATTERN)].flatten
       possibles = patterns.collect do |pattern|
-        body.scan(pattern).uniq.collect { |a| a.join("") }
+        matches = body.match(pattern)
+
+        matches[0] if matches
       end
 
       possibles.flatten.compact.uniq
     end
 
+    def match_group(name)
+      self.matches[name].gsub(/\s/, '')
+    end
+
     def serial_number
-      return self.matches["SerialNumber"] unless self.class.const_get("VALIDATION")
+      return match_group("SerialNumber") unless self.class.const_get("VALIDATION")
 
       format_info   = self.class.const_get(:VALIDATION)[:serial_number_format]
-      raw_serial    = self.matches["SerialNumber"]
+      raw_serial    = match_group("SerialNumber")
 
       if format_info
-        if to_prepend = format_info[:prepend_if_missing]
-          "#{to_prepend}#{raw_serial}" if raw_serial && !raw_serial.start_with?(to_prepend)
+        if format_info[:prepend_if] && raw_serial.match(Regexp.new(format_info[:prepend_if][:matches_regex]))
+          return "#{format_info[:prepend_if][:content]}#{raw_serial}"
+        elsif format_info[:prepend_if_missing]
+
         end
-      else
-        raw_serial
       end
+
+      return raw_serial
     end
 
     def courier_code
@@ -54,7 +62,7 @@ module TrackingNumber
     alias_method :carrier, :courier_code
 
     def check_digit
-      self.matches["CheckDigit"]
+      match_group("CheckDigit")
     end
 
     def courier
@@ -66,15 +74,15 @@ module TrackingNumber
     end
 
     def package_info
-      self.matches["ContainerType"]
+      match_group("ContainerType")
     end
 
     def destination
-      self.matches["DestinationZip"]
+      match_group("DestinationZip")
     end
 
     def shipper_info
-      self.matches["ShipperInfo"]
+      match_group("ShipperInfo")
     end
 
     def valid?
@@ -129,12 +137,12 @@ module TrackingNumber
     end
 
     def matching_additional
-      additional = self.class.const_get(:ADDITIONAL)
+      additional = self.class.const_get(:ADDITIONAL) || []
 
       relevant_sections = {}
 
       additional.each do |info|
-        if value = self.matches[info[:regex_group_name]]
+        if value = self.matches[info[:regex_group_name]].gsub(/\s/, "")
           # has matching value
           matches = info[:lookup].find do |info|
             if info[:matches]
@@ -153,6 +161,10 @@ module TrackingNumber
   end
 
   class Unknown < Base
+    def carrier
+      :unknown
+    end
+
     def courier
       :unknown
     end
