@@ -43,6 +43,10 @@ Dir.glob(File.join(File.dirname(__FILE__), "data/couriers/*.json")).each do |fil
     search_pattern = "\\b#{pattern}\\b"
 
     klass.const_set("COURIER_CODE", courier_code)
+
+    info = courier_info.dup
+    info.delete(:tracking_numbers)
+    klass.const_set("COURIER_INFO", info)
     klass.const_set("SEARCH_PATTERN", Regexp.new(search_pattern))
     klass.const_set("VERIFY_PATTERN", Regexp.new(verify_pattern))
 

@@ -3,6 +3,20 @@ require 'pry'
 require 'active_support'
 
 module TrackingNumber
+
+  class Info
+    def initialize(info_hash = {})
+      info_hash.keys.each do |key|
+        self.class.send(:attr_accessor, key)
+        self.instance_variable_set("@#{key}", info_hash[key])
+      end
+    end
+
+    def to_s
+      @name
+    end
+  end
+
   class Base
     attr_accessor :tracking_number
     attr_accessor :original_number
@@ -58,30 +72,50 @@ module TrackingNumber
       self.class.const_get(:COURIER_CODE).to_sym
     end
 
-    alias_method :carrier, :courier_code
+    alias_method :carrier, :courier_code #OG tracking_number gem used :carrier.
+
+    def courier_name
+      if self.class.constants.include?(:COURIER_INFO)
+        self.class.const_get(:COURIER_INFO)[:name]
+      end
+    end
 
     def check_digit
       match_group("CheckDigit")
     end
 
     def courier
-      matching_additional["Courier"]
+      basics = {:name => courier_name, :code => courier_code}
+
+      if info = matching_additional["Courier"]
+        basics.merge!(:name => info[:courier], :url => info[:courier_url], :country => info[:country])
+      end
+
+      @courier ||= Info.new(basics)
     end
 
     def service_type
-      matching_additional["Service Type"]
+      if matching_additional["Service Type"]
+        @service_type ||= Info.new(matching_additional["Service Type"])
+      end
     end
 
     def package_info
-      match_group("ContainerType")
+      if matching_additional["ContainerType"]
+        @package_info ||= Info.new(matching_additional["ContainerType"])
+      end
     end
 
     def destination
-      match_group("DestinationZip")
+      if match_group("DestinationZip")
+        @destination ||= Info.new(:zipcode => match_group("DestinationZip"))
+      end
     end
 
-    def shipper_info
-      match_group("ShipperInfo")
+    def shipper
+      if match_group("ShipperId")
+        @shiper ||= Info.new(:shipper_id => match_group("ShipperId"))
+      end
     end
 
     def valid?
@@ -168,8 +202,8 @@ module TrackingNumber
       :unknown
     end
 
-    def courier
-      :unknown
+    def courier_name
+      "Unknown"
     end
 
     def valid?
