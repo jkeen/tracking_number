@@ -24,14 +24,13 @@ module TrackingNumber
     end
 
     def self.scan(body)
-      patterns = [self.const_get(:SEARCH_PATTERN)].flatten
-      possibles = patterns.collect do |pattern|
-        matches = body.match(pattern)
+      matches = body.match(self.const_get(:SEARCH_PATTERN))
 
-        matches[0] if matches
+      if matches
+        [matches[0]]
+      else
+        []
       end
-
-      possibles.flatten.compact.uniq
     end
 
     def match_group(name)
@@ -115,7 +114,11 @@ module TrackingNumber
     end
 
     def valid_optional_checks?
-      true
+      additional_check = self.class.const_get("VALIDATION")[:additional]
+      return true unless additional_check
+
+      exist_checks = (additional_check[:exists] ||= [])
+      exist_checks.all? { |w| matching_additional[w] }
     end
 
     def valid_checksum?

@@ -75,10 +75,8 @@ module TrackingNumber
   end
 
   def self.scan(body)
-    TYPES.collect { |type|
-      if (!type.scan(body).empty?)
-        type
-      end
+    TYPES.select { |type|
+      !type.scan(body).empty?
     }.compact
   end
 

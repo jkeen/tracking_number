@@ -26,6 +26,15 @@ class TrackingNumberDataTest < Minitest::Test
             end
           end
         end
+
+        context "invalid numbers for #{tracking_info[:name]}" do
+          tracking_info[:test_numbers][:invalid].each do |invalid_number|
+            should "#{invalid_number} should report as invalid" do
+              should_be_invalid_number(invalid_number, "TrackingNumber::#{klass_name}".constantize, courier_code)
+            end
+          end
+        end
+
       end
     end
   end

@@ -47,6 +47,11 @@ class Minitest::Test
     assert t.valid?
   end
 
+  def should_be_invalid_number(invalid_number, type, carrier)
+    t = TrackingNumber.new(invalid_number)
+    assert !t.valid?
+  end
+
   def should_fail_on_check_digit_changes(valid_number)
     digits = valid_number.chars.to_a
     last = digits.pop.to_i
