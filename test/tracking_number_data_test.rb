@@ -5,19 +5,26 @@ class TrackingNumberDataTest < Minitest::Test
     courier_info = JSON.parse(File.read(file)).deep_symbolize_keys!
     courier_name = courier_info[:name]
 
-    context "#{courier_info[:name]}" do
       courier_code = courier_info[:courier_code].to_sym
 
       courier_info[:tracking_numbers].each do |tracking_info|
         klass_name = tracking_info[:name].gsub(/[^0-9A-Za-z]/, '')
-
-        context "valid numbers for #{tracking_info[:name]}" do
+        klass = "TrackingNumber::#{klass_name}".constantize
+        context "[#{tracking_info[:name]}]" do
           tracking_info[:test_numbers][:valid].each do |valid_number|
-            should "#{valid_number} should report as valid :#{courier_code}" do
-              should_be_valid_number(valid_number, "TrackingNumber::#{klass_name}".constantize, courier_code)
+
+            should "validate #{valid_number} with #{klass_name}" do
+              t = klass.new(valid_number)
+              assert_equal courier_code, t.carrier
+              assert t.valid?, "should be valid"
             end
 
-            should "fail on check digit changes on #{valid_number}" do
+            should "detect #{valid_number} as #{klass_name}" do
+              t = TrackingNumber.new(valid_number)
+              assert_equal klass, t.class
+            end
+
+            should "fail on check digit changes with #{valid_number}" do
               should_fail_on_check_digit_changes(valid_number)
             end
 
@@ -25,17 +32,14 @@ class TrackingNumberDataTest < Minitest::Test
               should_detect_number_variants(valid_number, "TrackingNumber::#{klass_name}".constantize)
             end
           end
-        end
 
-        context "invalid numbers for #{tracking_info[:name]}" do
           tracking_info[:test_numbers][:invalid].each do |invalid_number|
-            should "#{invalid_number} should report as invalid" do
-              should_be_invalid_number(invalid_number, "TrackingNumber::#{klass_name}".constantize, courier_code)
+            should "not validate #{invalid_number} with #{klass_name}" do
+              t = klass.new(invalid_number)
+              assert !t.valid?, "should not be valid"
             end
           end
         end
-
       end
-    end
   end
 end
