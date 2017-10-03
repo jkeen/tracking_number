@@ -6,7 +6,7 @@ class TrackingNumberValidator < ActiveModel::EachValidator
     elsif TrackingNumber.new(value).valid?
       # looks good to me
     else
-      record.errors[attribute] << options[:message] || 'is not a valid tracking number'
+      record.errors[attribute] << (options[:message] || 'is not a valid tracking number')
     end
   end
 end
