@@ -34,7 +34,7 @@ GEM
     pry (0.11.3)
       coderay (~> 1.1.0)
       method_source (~> 0.9.0)
-    rake (12.3.0)
+    rake (10.4.2)
     ruby-progressbar (1.9.0)
     shoulda (3.5.0)
       shoulda-context (~> 1.0, >= 1.0.1)
@@ -55,14 +55,12 @@ PLATFORMS
   ruby
 
 DEPENDENCIES
-  activemodel (~> 4.2.5.2)
-  activesupport (~> 4.2)
+  activemodel (~> 4.2.5.1)
   awesome_print (~> 1.8)
-  json (>= 1.8.5)
   minitest (~> 5.5)
   minitest-reporters (~> 1.1)
   pry
-  rake
+  rake (~> 10.4.2)
   shoulda
   simplecov
   tracking_number!
