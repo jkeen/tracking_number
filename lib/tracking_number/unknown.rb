@@ -19,5 +19,13 @@ module TrackingNumber
     def valid_checksum?
       false
     end
+
+    def decode
+      {}
+    end
+
+    def matching_additional
+      {}
+    end
   end
 end

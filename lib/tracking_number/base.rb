@@ -33,24 +33,6 @@ module TrackingNumber
       end
     end
 
-    def match_group(name)
-      begin
-        self.matches[name].gsub(/\s/, '')
-      rescue
-        ""
-      end
-    end
-
-    def info
-      Info.new({
-        :courier => courier,
-        :service => service_type,
-        :destination => destination,
-        :shipper => shipper,
-        :package_info => package_info
-      })
-    end
-
     def serial_number
       return match_group("SerialNumber") unless self.class.const_get("VALIDATION")
 
@@ -68,6 +50,68 @@ module TrackingNumber
       return raw_serial
     end
 
+    def check_digit
+      match_group("CheckDigit")
+    end
+
+    def decode
+      decoded = {}
+      (self.matches.try(:names) || []).each do |name|
+        sym = name.underscore.to_sym
+        decoded[sym] = self.matches[name]
+      end
+
+      decoded
+    end
+
+    def valid?
+      return false unless valid_format?
+      return false unless valid_checksum?
+      return false unless valid_optional_checks?
+      return true
+    end
+
+    def valid_format?
+      !matches.nil?
+    end
+
+    def valid_optional_checks?
+      additional_check = self.class.const_get("VALIDATION")[:additional]
+      return true unless additional_check
+
+      exist_checks = (additional_check[:exists] ||= [])
+      exist_checks.all? { |w| matching_additional[w] }
+    end
+
+    def valid_checksum?
+      return false unless self.valid_format?
+      checksum_info   = self.class.const_get(:VALIDATION)[:checksum]
+      return true unless checksum_info
+
+      name            = checksum_info[:name]
+      method_name     = "validates_#{name}?"
+
+      ChecksumValidations.send(method_name, serial_number, check_digit, checksum_info)
+    end
+
+    def to_s
+      self.tracking_number
+    end
+
+    def inspect
+      "#<%s:%#0x %s>" % [self.class.to_s, self.object_id, tracking_number]
+    end
+
+    def info
+      Info.new({
+        :courier => courier,
+        :service => service_type,
+        :destination => destination,
+        :shipper => shipper,
+        :package_info => package_info
+      })
+    end
+
     def courier_code
       self.class.const_get(:COURIER_CODE).to_sym
     end
@@ -75,13 +119,13 @@ module TrackingNumber
     alias_method :carrier, :courier_code #OG tracking_number gem used :carrier.
 
     def courier_name
-      if self.class.constants.include?(:COURIER_INFO)
-        self.class.const_get(:COURIER_INFO)[:name]
+      if matching_additional["Courier"]
+        matching_additional["Courier"][:courier]
+      else
+        if self.class.constants.include?(:COURIER_INFO)
+          self.class.const_get(:COURIER_INFO)[:name]
+        end
       end
-    end
-
-    def check_digit
-      match_group("CheckDigit")
     end
 
     def courier
@@ -118,22 +162,32 @@ module TrackingNumber
       end
     end
 
-    def valid?
-      return false unless valid_format?
-      return false unless valid_checksum?
-      return false unless valid_optional_checks?
-      return true
-    end
+    def matching_additional
+      additional = self.class.const_get(:ADDITIONAL) || []
 
-    def decode
-      decoded = {}
-      self.matches.names.each do |name|
-        sym = name.underscore.to_sym
-        decoded[sym] = self.matches[name]
+      relevant_sections = {}
+
+      additional.each do |info|
+        if self.matches && self.matches.length > 0
+          if value = self.matches[info[:regex_group_name]].gsub(/\s/, "")
+            # has matching value
+            matches = info[:lookup].find do |i|
+              if i[:matches]
+                value == i[:matches]
+              elsif i[:matches_regex]
+                value =~ Regexp.new(i[:matches_regex])
+              end
+            end
+
+            relevant_sections[info[:name]] = matches
+          end
+        end
       end
 
-      decoded
+      relevant_sections
     end
+
+    protected
 
     def matches
       if self.class.constants.include?(:VERIFY_PATTERN)
@@ -143,58 +197,13 @@ module TrackingNumber
       end
     end
 
-    def valid_format?
-      !matches.nil?
-    end
-
-    def valid_optional_checks?
-      additional_check = self.class.const_get("VALIDATION")[:additional]
-      return true unless additional_check
-
-      exist_checks = (additional_check[:exists] ||= [])
-      exist_checks.all? { |w| matching_additional[w] }
-    end
-
-    def valid_checksum?
-      return false unless self.valid_format?
-      checksum_info   = self.class.const_get(:VALIDATION)[:checksum]
-      return true unless checksum_info
-
-      name            = checksum_info[:name]
-      method_name     = "validates_#{name}?"
-
-      ChecksumValidations.send(method_name, serial_number, check_digit, checksum_info)
-    end
-
-    def to_s
-      self.tracking_number
-    end
-
-    def inspect
-      "#<%s:%#0x %s>" % [self.class.to_s, self.object_id, tracking_number]
-    end
-
-    def matching_additional
-      additional = self.class.const_get(:ADDITIONAL) || []
-
-      relevant_sections = {}
-
-      additional.each do |info|
-        if value = self.matches[info[:regex_group_name]].gsub(/\s/, "")
-          # has matching value
-          matches = info[:lookup].find do |info|
-            if info[:matches]
-              value == info[:matches]
-            elsif info[:matches_regex]
-              value =~ Regexp.new(info[:matches_regex])
-            end
-          end
-
-          relevant_sections[info[:name]] = matches
-        end
+    def match_group(name)
+      begin
+        self.matches[name].gsub(/\s/, '')
+      rescue
+        nil
       end
-
-      relevant_sections
     end
+
   end
 end

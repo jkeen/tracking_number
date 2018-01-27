@@ -28,7 +28,7 @@ def test_numbers_return_required_groups?(tracking, regex)
 end
 
 def read_courier_info(file)
-  JSON.parse(File.read(file)).deep_symbolize_keys!
+  return JSON.parse(File.read(file)).deep_symbolize_keys!
 end
 
 def create_class(klass, courier_info, tracking_info)
@@ -55,7 +55,7 @@ end
 
 def register_class(klass, tracking_name)
   klass_name = tracking_name.gsub(/[^0-9A-Za-z]/, '')
-  const = TrackingNumber.const_set(klass_name, klass)
+  return TrackingNumber.const_set(klass_name, klass)
 end
 
 tracking_number_types = []

@@ -10,7 +10,7 @@ $LOAD_PATH.unshift(File.join(File.dirname(__FILE__), '..', 'lib'))
 $LOAD_PATH.unshift(File.dirname(__FILE__))
 require 'tracking_number'
 
-Minitest::Reporters.use! Minitest::Reporters::ProgressReporter.new
+Minitest::Reporters.use! [Minitest::Reporters::DefaultReporter.new(:color => true)]
 
 class Minitest::Test
   def possible_numbers(tracking)
