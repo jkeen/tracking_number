@@ -24,8 +24,11 @@ class TrackingNumberDataTest < Minitest::Test
               assert_equal klass, t.class
             end
 
-            should "fail on check digit changes with #{valid_number}" do
-              should_fail_on_check_digit_changes(valid_number)
+            if tracking_info[:validation][:checksum]
+              # only run this test if number format has checksum
+              should "fail on check digit changes with #{valid_number}" do
+                should_fail_on_check_digit_changes(valid_number)
+              end
             end
 
             should "detect #{valid_number} regardless of spacing" do

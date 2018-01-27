@@ -3,20 +3,6 @@ require 'pry'
 require 'active_support'
 
 module TrackingNumber
-
-  class Info
-    def initialize(info_hash = {})
-      info_hash.keys.each do |key|
-        self.class.send(:attr_accessor, key)
-        self.instance_variable_set("@#{key}", info_hash[key])
-      end
-    end
-
-    def to_s
-      @name
-    end
-  end
-
   class Base
     attr_accessor :tracking_number
     attr_accessor :original_number
@@ -48,7 +34,21 @@ module TrackingNumber
     end
 
     def match_group(name)
-      self.matches[name].gsub(/\s/, '')
+      begin
+        self.matches[name].gsub(/\s/, '')
+      rescue
+        ""
+      end
+    end
+
+    def info
+      Info.new({
+        :courier => courier,
+        :service => service_type,
+        :destination => destination,
+        :shipper => shipper,
+        :package_info => package_info
+      })
     end
 
     def serial_number
@@ -114,7 +114,7 @@ module TrackingNumber
 
     def shipper
       if match_group("ShipperId")
-        @shiper ||= Info.new(:shipper_id => match_group("ShipperId"))
+        @shipper ||= Info.new(:shipper_id => match_group("ShipperId"))
       end
     end
 
@@ -157,8 +157,9 @@ module TrackingNumber
 
     def valid_checksum?
       return false unless self.valid_format?
-
       checksum_info   = self.class.const_get(:VALIDATION)[:checksum]
+      return true unless checksum_info
+
       name            = checksum_info[:name]
       method_name     = "validates_#{name}?"
 
@@ -194,28 +195,6 @@ module TrackingNumber
       end
 
       relevant_sections
-    end
-  end
-
-  class Unknown < Base
-    def carrier
-      :unknown
-    end
-
-    def courier_name
-      "Unknown"
-    end
-
-    def valid?
-      false
-    end
-
-    def valid_format?
-      false
-    end
-
-    def valid_checksum?
-      false
     end
   end
 end

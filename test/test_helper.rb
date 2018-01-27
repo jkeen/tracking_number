@@ -10,7 +10,7 @@ $LOAD_PATH.unshift(File.join(File.dirname(__FILE__), '..', 'lib'))
 $LOAD_PATH.unshift(File.dirname(__FILE__))
 require 'tracking_number'
 
-Minitest::Reporters.use! Minitest::Reporters::SpecReporter.new
+Minitest::Reporters.use! Minitest::Reporters::ProgressReporter.new
 
 class Minitest::Test
   def possible_numbers(tracking)
@@ -53,7 +53,7 @@ class Minitest::Test
   end
 
   def should_fail_on_check_digit_changes(valid_number)
-    digits = valid_number.chars.to_a
+    digits = valid_number.gsub(/\s/, "").chars.to_a
     last = digits.pop.to_i
     digits << (last  < 2 ? last + 3 : last - 3).to_s
     invalid_number = digits.join

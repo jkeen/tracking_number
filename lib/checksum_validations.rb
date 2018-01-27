@@ -5,7 +5,7 @@ module ChecksumValidations
 
       total = 0
       sequence.chars.to_a.zip(weighting).each do |(a,b)|
-        total += a.to_i * b
+        total += a.to_i * b.to_i
       end
 
       remainder = total % 11
