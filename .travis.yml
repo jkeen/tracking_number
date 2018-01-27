@@ -1,5 +1,6 @@
 language: ruby
-
+sudo: false
+cache: bundler
 rvm:
   - "1.9.3"
   - "2.0.0"
@@ -7,4 +8,5 @@ rvm:
   - "2.2.7"
   - "2.3.4"
   - "2.4.1"
-  - "jruby"
+before_install:
+  - travis_retry gem update --system
