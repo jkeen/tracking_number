@@ -1,7 +1,7 @@
 source "http://rubygems.org"
 # Specify your gem's dependencies in tracking_number.gemspec
 gemspec
-gem 'json'
+gem 'json', '>= 1.8.5'
 gem "activesupport", "~> 4.2"
 
 group :test do
