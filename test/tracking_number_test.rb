@@ -26,6 +26,12 @@ class TrackingNumberTest < Minitest::Test
       assert_equal 2, s.size
     end
 
+    should "return two ups tracking numbers when given string with two ups tracking numbers" do
+      s = TrackingNumber.search("Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, 1Z5R89390357567127 nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute 1Z879E930346834440 dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.")
+      assert_equal 2, s.size
+      assert_equal [TrackingNumber::UPS, TrackingNumber::UPS], s.collect { |t| t.class }
+    end
+
     should "return tracking numbers without trailing whitespace" do
       s = TrackingNumber.search("hello 1Z879E930346834440\nbye")
       assert_equal 1, s.size

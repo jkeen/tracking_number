@@ -83,12 +83,6 @@ module TrackingNumber
     TYPES.collect { |type| type.search(body) }.flatten
   end
 
-  def self.scan(body)
-    TYPES.select { |type|
-      !type.scan(body).empty?
-    }.compact
-  end
-
   def self.detect(tracking_number)
     tn = nil
     for test_klass in (TYPES+[Unknown])
@@ -96,6 +90,15 @@ module TrackingNumber
       break if tn.valid?
     end
     return tn
+  end
+
+  def self.detect_all(tracking_number)
+    matches = []
+    for test_klass in (TYPES+[Unknown])
+      tn = test_klass.new(tracking_number)
+      matches << tn if tn.valid?
+    end
+    return matches
   end
 
   def self.new(tracking_number)
