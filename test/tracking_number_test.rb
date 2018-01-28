@@ -38,4 +38,100 @@ class TrackingNumberTest < Minitest::Test
       assert_equal "1Z879E930346834440", s.first.tracking_number
     end
   end
+
+  context "tracking number additional data for ups" do
+    tracking_number = TrackingNumber.new("1Z5R89390357567127")
+
+    should "report correct courier name" do
+      assert_equal "UPS", tracking_number.courier.name
+    end
+
+    should "report correct service" do
+      assert_equal "UPS United States Ground", tracking_number.service_type.name
+    end
+
+    should "report correct shipper_id" do
+      assert_equal "5R8939", tracking_number.shipper.shipper_id
+    end
+
+    should "report correct no destination" do
+      assert_equal nil, tracking_number.destination
+    end
+
+    should "report correct no package info" do
+      assert_equal nil, tracking_number.package_info
+    end
+  end
+
+  context "tracking number additional data for s10" do
+    tracking_number = TrackingNumber.new("RB123456785GB")
+
+    should "report correct courier name" do
+      assert_equal "Royal Mail Group plc", tracking_number.courier.name
+    end
+
+    should "report correct service" do
+      assert_equal "Letter Post Registered", tracking_number.service_type.name
+    end
+
+    should "report correct shipper_id" do
+      assert_nil tracking_number.shipper
+    end
+
+    should "report correct no destination" do
+      assert_nil tracking_number.destination
+    end
+
+    should "report correct no package info" do
+      assert_nil tracking_number.package_info
+    end
+  end
+
+  context "tracking number additional data for USPS 20" do
+    tracking_number = TrackingNumber.new("0307 1790 0005 2348 3741")
+
+    should "report correct courier name" do
+      assert_equal "United States Postal Service", tracking_number.courier.name
+    end
+
+    should "report correct service" do
+      assert_nil tracking_number.service_type
+    end
+
+    should "report correct shipper_id" do
+      assert_nil tracking_number.shipper
+    end
+
+    should "report correct no destination" do
+      assert_nil tracking_number.destination
+    end
+
+    should "report correct no package info" do
+      assert_nil tracking_number.package_info
+    end
+  end
+
+  context "tracking number additional data for USPS 34v2" do
+    tracking_number = TrackingNumber.new("4201002334249200190132607600833457")
+
+    should "report correct courier name" do
+      assert_equal "United States Postal Service", tracking_number.courier.name
+    end
+
+    should "report correct service" do
+      assert_nil tracking_number.service_type
+    end
+
+    should "report correct shipper_id" do
+      assert_equal "00190132", tracking_number.shipper.shipper_id
+    end
+
+    should "report correct no destination" do
+      assert_equal "10023", tracking_number.destination.zipcode
+    end
+
+    should "report correct no package info" do
+      assert_nil tracking_number.package_info
+    end
+  end
 end
