@@ -33,7 +33,7 @@ module TrackingNumber
   end
 
   class DHLGlobalMail < DHL
-    SEARCH_PATTERN = /(GM)\d{18}$/
+    SEARCH_PATTERN = /(GM)\d{18}/
     VERIFY_PATTERN = /(GM)\d{18}$/
 
     def matches

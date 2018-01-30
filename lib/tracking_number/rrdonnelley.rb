@@ -6,8 +6,8 @@ module TrackingNumber
   end
 
   class RRDonnelleyStandard < RRDonnelley
-    SEARCH_PATTERN = /(\b([0-9]\s*){12,12}\b)/
-    VERIFY_PATTERN = /(RRD)\d{15}$/
+    SEARCH_PATTERN = /RRD\d{15}/
+    VERIFY_PATTERN = /^(RRD)\d{15}$/
     LENGTH = 18
 
     def matches
