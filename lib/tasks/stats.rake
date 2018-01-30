@@ -36,7 +36,7 @@ def has_additional_key_info?(tracking_numbers, key)
   end
 end
 
-namespace :info do
+
   desc "show stats for tracking number types"
   task :stats do
     rows = []
@@ -47,6 +47,12 @@ namespace :info do
 
       courier_info[:tracking_numbers].each do |tracking_info|
         tracking_type = tracking_info[:name]
+
+        if tracking_type == "S10"
+          country_count = tracking_info[:additional].detect { |r| r[:regex_group_name] == "CountryCode" }[:lookup].size
+          tracking_type = "S10 (#{country_count} types)"
+        end
+
         tracking_numbers = tracking_info[:test_numbers][:valid].collect { |n| TrackingNumber.new(n) }
 
         checksum_status = tracking_numbers.first.valid_checksum? &&
@@ -82,7 +88,3 @@ namespace :info do
 
     puts table
   end
-
-
-  task :all => [:stats]
-end
