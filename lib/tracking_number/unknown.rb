@@ -1,7 +1,9 @@
 module TrackingNumber
   class Unknown < Base
+    COURIER_CODE = :unknown
+
     def carrier
-      :unknown
+      COURIER_CODE
     end
 
     def courier_name

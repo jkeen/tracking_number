@@ -6,6 +6,10 @@ class TrackingNumberTest < Minitest::Test
       t = TrackingNumber.new("101")
       assert_equal TrackingNumber::Unknown, t.class
       assert_equal :unknown, t.carrier
+      assert_equal :unknown, t.courier.code
+      assert_equal "Unknown", t.courier.name
+      assert_equal "Unknown", t.courier_name
+
       assert !t.valid?
     end
 
