@@ -55,11 +55,11 @@ class TrackingNumberTest < Minitest::Test
     end
 
     should "report correct no destination" do
-      assert_equal nil, tracking_number.destination
+      assert_nil tracking_number.destination
     end
 
     should "report correct no package info" do
-      assert_equal nil, tracking_number.package_info
+      assert_nil tracking_number.package_info
     end
   end
 
