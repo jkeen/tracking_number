@@ -31,4 +31,13 @@ module TrackingNumber
       self.tracking_number.scan(VERIFY_PATTERN).flatten
     end
   end
+
+  class DHLGlobalMail < DHL
+    SEARCH_PATTERN = /(GM)\d{18}/
+    VERIFY_PATTERN = /(GM)\d{18}$/
+
+    def matches
+      self.tracking_number.scan(VERIFY_PATTERN).flatten
+    end
+  end
 end
