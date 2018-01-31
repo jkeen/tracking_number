@@ -6,10 +6,8 @@ Gem::Specification.new do |s|
   s.name = %q{tracking_number}
   s.version = TrackingNumber::VERSION
   s.platform = Gem::Platform::RUBY
-
   s.required_rubygems_version = Gem::Requirement.new(">= 0") if s.respond_to? :required_rubygems_version=
   s.authors = ["Jeff Keen"]
-  s.date = %q{2017-02-21}
   s.description = %q{This gem identifies valid tracking numbers and the service they're associated with. It can also tell you a little bit about the package purely from the number—there's quite a bit of info tucked away into those numbers, it turns out.}
   s.email = %q{jeff@keen.me}
   s.extra_rdoc_files = [
@@ -29,4 +27,6 @@ Gem::Specification.new do |s|
   s.add_development_dependency('simplecov')
   s.add_development_dependency('activemodel', '~> 4.2.5.1')
   s.add_development_dependency('minitest','~> 5.5')
+  s.add_development_dependency('awesome_print','~> 1.8')
+  s.add_development_dependency('terminal-table')
 end
