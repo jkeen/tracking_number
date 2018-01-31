@@ -1,13 +1,10 @@
-## Tracking Number
+## Tracking Number (v1.x)
 
-This gem identifies valid tracking numbers and the service they're associated with. It can also tell you a little bit about the package purely from the number—there's quite a bit of info tucked away into those numbers, it turns out.
+This gem identifies valid tracking numbers and can tell you a little bit about the shipment just from the number—there's quite a bit of info tucked away into those numbers, it turns out.
+
+It detects tracking numbers from UPS, FedEx, DHL, USPS, OnTrac, Amazon Logistics, and 160+ countries national postal services (S10 standard).
 
 This gem does not do tracking. That is left up to you.
-
-#### Where the data comes from
-
-Starting with the 1.0 release of this gem the data for tracking numbers including validation information and additional lookup information (such as service type) comes from [tracking_number_data](http://github.com/jkeen/tracking_number_data).
-Bugs relating to detection or unsupported tracking numbers should be filed on that repo.
 
 ## Usage
 
@@ -26,12 +23,7 @@ t.valid? #=> true
 This will return valid tracking numbers contained within a block of text.
 
 ```ruby
-TrackingNumber.search("Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod
-tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, 1Z879E930346834440
-nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis
-aute 9611020987654312345672 dolor in reprehenderit in voluptate velit esse cillum dolore eu
-fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui
-officia deserunt mollit anim id est laborum.")
+TrackingNumber.search("Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, 1Z879E930346834440 nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute 9611020987654312345672 dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.")
 
 #=> [#<TrackingNumber::UPS 1Z879E930346834440>, #<TrackingNumber::FedExGround96 9611020987654312345672>]
 ```
@@ -68,7 +60,13 @@ t.service_type #=> "UPS SurePost - Delivered by the USPS"
 
 t = TrackingNumber.new("RB123456785US")
 t.service_type #=> "Letter Post Registered"
+```
 
+#### Shipper ID
+Some tracking numbers indicate information about their package
+```ruby
+t = TrackingNumber.new("1Z6072AF0320751583")
+t.shipper_id #=> "6072AF" <-- this is Target
 ```
 
 #### Destination Zip
@@ -85,18 +83,10 @@ Some tracking numbers indicate information about their package
 ```ruby
 t = TrackingNumber.new("012345000000002")
 t.package_type #=> "case/carton"
-
-```
-
-#### Shipper ID
-Some tracking numbers indicate information about their package
-```ruby
-t = TrackingNumber.new("1Z6072AF0320751583")
-t.shipper_id #=> "6072AF" <-- this is Target
 ```
 
 #### Decoding
-Most tracking numbers have a format, where each part of the number has meaning. `decode` splits up the number into its named parts.
+Most tracking numbers have a format where each part of the number has meaning. `decode` splits up the number into its known named parts.
 ```ruby
   t = TrackingNumber.new("1Z879E930346834440")
   t.decode
@@ -126,8 +116,10 @@ class Shipment < ActiveRecord::Base
 end
 ```
 
-## Contributing to tracking_number
+## Where the data comes from
+Starting with the 1.0 release of this gem the data for tracking numbers has been extracted into a separate repository ([tracking_number_data](http://github.com/jkeen/tracking_number_data)) so non-ruby clients can benefit from the detection/documentation that used to be contained deep in the code of this gem. If you want to write a client in some other language, that's the stuff you want.
 
+## Contributing to tracking_number
 * Check out the latest master to make sure the feature hasn't been implemented or the bug hasn't been fixed yet
 * Check out the issue tracker to make sure someone already hasn't requested it and/or contributed it
 * Fork the project
