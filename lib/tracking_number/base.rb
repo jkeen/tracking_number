@@ -1,3 +1,7 @@
+require 'checksum_validations'
+require 'pry'
+require 'active_support'
+
 module TrackingNumber
   class Base
     attr_accessor :tracking_number
@@ -20,34 +24,80 @@ module TrackingNumber
     end
 
     def self.scan(body)
-      patterns = [self.const_get("SEARCH_PATTERN")].flatten
-      possibles = patterns.collect do |pattern|
-        body.scan(pattern).uniq.flatten
+      # matches with match groups within the match data
+      matches = []
+
+      body.scan(self.const_get(:SEARCH_PATTERN)){
+        #get the match data instead, which is needed with these types of regexes
+        matches << $~
+      }
+
+      if matches
+        matches.collect { |m| m[0] }
+      else
+        []
+      end
+    end
+
+    def serial_number
+      return match_group("SerialNumber") unless self.class.const_get("VALIDATION")
+
+      format_info   = self.class.const_get(:VALIDATION)[:serial_number_format]
+      raw_serial    = match_group("SerialNumber")
+
+      if format_info
+        if format_info[:prepend_if] && raw_serial.match(Regexp.new(format_info[:prepend_if][:matches_regex]))
+          return "#{format_info[:prepend_if][:content]}#{raw_serial}"
+        elsif format_info[:prepend_if_missing]
+
+        end
       end
 
-      possibles.flatten.compact.uniq
+      return raw_serial
+    end
+
+    def check_digit
+      match_group("CheckDigit")
+    end
+
+    def decode
+      decoded = {}
+      (self.matches.try(:names) || []).each do |name|
+        sym = name.underscore.to_sym
+        decoded[sym] = self.matches[name]
+      end
+
+      decoded
     end
 
     def valid?
       return false unless valid_format?
       return false unless valid_checksum?
+      return false unless valid_optional_checks?
       return true
     end
 
     def valid_format?
-      !matches.nil? && !matches.empty?
+      !matches.nil?
     end
 
-    def decode
-      {}
-    end
+    def valid_optional_checks?
+      additional_check = self.class.const_get("VALIDATION")[:additional]
+      return true unless additional_check
 
-    def matches
-      []
+      exist_checks = (additional_check[:exists] ||= [])
+      exist_checks.all? { |w| matching_additional[w] }
     end
 
     def valid_checksum?
-      false
+      return false unless self.valid_format?
+      checksum_info   = self.class.const_get(:VALIDATION)[:checksum]
+      return true unless checksum_info
+
+      name            = checksum_info[:name]
+      method_name     = "validates_#{name}?"
+
+      ChecksumValidations.send(method_name, serial_number, check_digit, checksum_info)
     end
 
     def to_s
@@ -57,11 +107,115 @@ module TrackingNumber
     def inspect
       "#<%s:%#0x %s>" % [self.class.to_s, self.object_id, tracking_number]
     end
-  end
 
-  class Unknown < Base
-    def carrier
-      :unknown
+    def info
+      Info.new({
+        :courier => courier_info,
+        :service_type => service_type,
+        :service_description => service_description,
+        :destination_zip => destination_zip,
+        :shipper_id => shipper_id,
+        :package_type => package_type,
+        :package_description => package_description
+      })
     end
+
+    def courier_code
+      self.class.const_get(:COURIER_CODE).to_sym
+    end
+
+    def courier_name
+      if matching_additional["Courier"]
+        matching_additional["Courier"][:courier]
+      else
+        if self.class.constants.include?(:COURIER_INFO)
+          self.class.const_get(:COURIER_INFO)[:name]
+        end
+      end
+    end
+
+    alias_method :carrier, :courier_code #OG tracking_number gem used :carrier.
+    alias_method :carrier_code, :courier_code
+    alias_method :carrier_name, :courier_name
+
+    def courier_info
+      basics = {:name => courier_name, :code => courier_code}
+
+      if info = matching_additional["Courier"]
+        basics.merge!(:name => info[:courier], :url => info[:courier_url], :country => info[:country])
+      end
+
+      @courier ||= Info.new(basics)
+    end
+
+    def service_type
+      if matching_additional["Service Type"]
+        @service_type ||= Info.new(matching_additional["Service Type"]).name
+      end
+    end
+
+    def service_description
+      if matching_additional["Service Type"]
+        @service_description ||= Info.new(matching_additional["Service Type"]).description
+      end
+    end
+
+    def package_type
+      if matching_additional["ContainerType"]
+        @package_type ||= Info.new(matching_additional["Container Type"]).package_info.name
+      end
+    end
+
+    def destination_zip
+      match_group("DestinationZip")
+    end
+
+    def shipper_id
+      match_group("ShipperId")
+    end
+
+    def matching_additional
+      additional = self.class.const_get(:ADDITIONAL) || []
+
+      relevant_sections = {}
+
+      additional.each do |info|
+        if self.matches && self.matches.length > 0
+          if value = self.matches[info[:regex_group_name]].gsub(/\s/, "")
+            # has matching value
+            matches = info[:lookup].find do |i|
+              if i[:matches]
+                value == i[:matches]
+              elsif i[:matches_regex]
+                value =~ Regexp.new(i[:matches_regex])
+              end
+            end
+
+            relevant_sections[info[:name]] = matches
+          end
+        end
+      end
+
+      relevant_sections
+    end
+
+    protected
+
+    def matches
+      if self.class.constants.include?(:VERIFY_PATTERN)
+        self.tracking_number.match(self.class.const_get(:VERIFY_PATTERN))
+      else
+        []
+      end
+    end
+
+    def match_group(name)
+      begin
+        self.matches[name].gsub(/\s/, '')
+      rescue
+        nil
+      end
+    end
+
   end
 end
