@@ -110,19 +110,19 @@ module TrackingNumber
 
     def info
       Info.new({
-        :courier => courier,
-        :service => service_type,
-        :destination => destination,
-        :shipper => shipper,
-        :package_info => package_info
+        :courier => courier_info,
+        :service_type => service_type,
+        :service_description => service_description,
+        :destination_zip => destination_zip,
+        :shipper_id => shipper_id,
+        :package_type => package_type,
+        :package_description => package_description
       })
     end
 
     def courier_code
       self.class.const_get(:COURIER_CODE).to_sym
     end
-
-    alias_method :carrier, :courier_code #OG tracking_number gem used :carrier.
 
     def courier_name
       if matching_additional["Courier"]
@@ -134,7 +134,11 @@ module TrackingNumber
       end
     end
 
-    def courier
+    alias_method :carrier, :courier_code #OG tracking_number gem used :carrier.
+    alias_method :carrier_code, :courier_code
+    alias_method :carrier_name, :courier_name
+
+    def courier_info
       basics = {:name => courier_name, :code => courier_code}
 
       if info = matching_additional["Courier"]
@@ -146,26 +150,28 @@ module TrackingNumber
 
     def service_type
       if matching_additional["Service Type"]
-        @service_type ||= Info.new(matching_additional["Service Type"])
+        @service_type ||= Info.new(matching_additional["Service Type"]).name
       end
     end
 
-    def package_info
+    def service_description
+      if matching_additional["Service Type"]
+        @service_description ||= Info.new(matching_additional["Service Type"]).description
+      end
+    end
+
+    def package_type
       if matching_additional["ContainerType"]
-        @package_info ||= Info.new(matching_additional["ContainerType"])
+        @package_type ||= Info.new(matching_additional["Container Type"]).package_info.name
       end
     end
 
-    def destination
-      if match_group("DestinationZip")
-        @destination ||= Info.new(:zipcode => match_group("DestinationZip"))
-      end
+    def destination_zip
+      match_group("DestinationZip")
     end
 
-    def shipper
-      if match_group("ShipperId")
-        @shipper ||= Info.new(:shipper_id => match_group("ShipperId"))
-      end
+    def shipper_id
+      match_group("ShipperId")
     end
 
     def matching_additional

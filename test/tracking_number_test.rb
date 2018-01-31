@@ -6,8 +6,7 @@ class TrackingNumberTest < Minitest::Test
       t = TrackingNumber.new("101")
       assert_equal TrackingNumber::Unknown, t.class
       assert_equal :unknown, t.carrier
-      assert_equal :unknown, t.courier.code
-      assert_equal "Unknown", t.courier.name
+      assert_equal :unknown, t.courier_code
       assert_equal "Unknown", t.courier_name
 
       assert !t.valid?
@@ -47,23 +46,23 @@ class TrackingNumberTest < Minitest::Test
     tracking_number = TrackingNumber.new("1Z5R89390357567127")
 
     should "report correct courier name" do
-      assert_equal "UPS", tracking_number.courier.name
+      assert_equal "UPS", tracking_number.courier_name
     end
 
     should "report correct service" do
-      assert_equal "UPS United States Ground", tracking_number.service_type.name
+      assert_equal "UPS United States Ground", tracking_number.service_type
     end
 
     should "report correct shipper_id" do
-      assert_equal "5R8939", tracking_number.shipper.shipper_id
+      assert_equal "5R8939", tracking_number.shipper_id
     end
 
     should "report correct no destination" do
-      assert_nil tracking_number.destination
+      assert_nil tracking_number.destination_zip
     end
 
     should "report correct no package info" do
-      assert_nil tracking_number.package_info
+      assert_nil tracking_number.package_type
     end
   end
 
@@ -71,23 +70,23 @@ class TrackingNumberTest < Minitest::Test
     tracking_number = TrackingNumber.new("RB123456785GB")
 
     should "report correct courier name" do
-      assert_equal "Royal Mail Group plc", tracking_number.courier.name
+      assert_equal "Royal Mail Group plc", tracking_number.courier_name
     end
 
     should "report correct service" do
-      assert_equal "Letter Post Registered", tracking_number.service_type.name
+      assert_equal "Letter Post Registered", tracking_number.service_type
     end
 
     should "report correct shipper_id" do
-      assert_nil tracking_number.shipper
+      assert_nil tracking_number.shipper_id
     end
 
     should "report correct no destination" do
-      assert_nil tracking_number.destination
+      assert_nil tracking_number.destination_zip
     end
 
     should "report correct no package info" do
-      assert_nil tracking_number.package_info
+      assert_nil tracking_number.package_type
     end
   end
 
@@ -95,7 +94,7 @@ class TrackingNumberTest < Minitest::Test
     tracking_number = TrackingNumber.new("0307 1790 0005 2348 3741")
 
     should "report correct courier name" do
-      assert_equal "United States Postal Service", tracking_number.courier.name
+      assert_equal "United States Postal Service", tracking_number.courier_name
     end
 
     should "report correct service" do
@@ -103,15 +102,15 @@ class TrackingNumberTest < Minitest::Test
     end
 
     should "report correct shipper_id" do
-      assert_nil tracking_number.shipper
+      assert_nil tracking_number.shipper_id
     end
 
     should "report correct no destination" do
-      assert_nil tracking_number.destination
+      assert_nil tracking_number.destination_zip
     end
 
     should "report correct no package info" do
-      assert_nil tracking_number.package_info
+      assert_nil tracking_number.package_type
     end
   end
 
@@ -119,7 +118,7 @@ class TrackingNumberTest < Minitest::Test
     tracking_number = TrackingNumber.new("4201002334249200190132607600833457")
 
     should "report correct courier name" do
-      assert_equal "United States Postal Service", tracking_number.courier.name
+      assert_equal "United States Postal Service", tracking_number.courier_name
     end
 
     should "report correct service" do
@@ -127,15 +126,15 @@ class TrackingNumberTest < Minitest::Test
     end
 
     should "report correct shipper_id" do
-      assert_equal "00190132", tracking_number.shipper.shipper_id
+      assert_equal "00190132", tracking_number.shipper_id
     end
 
     should "report correct no destination" do
-      assert_equal "10023", tracking_number.destination.zipcode
+      assert_equal "10023", tracking_number.destination_zip
     end
 
     should "report correct no package info" do
-      assert_nil tracking_number.package_info
+      assert_nil tracking_number.package_type
     end
   end
 end

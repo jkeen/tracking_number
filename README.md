@@ -1,23 +1,29 @@
-## tracking_number
+## Tracking Number
 
 This gem identifies valid tracking numbers and the service they're associated with. It can also tell you a little bit about the package purely from the number—there's quite a bit of info tucked away into those numbers, it turns out.
 
 This gem does not do tracking. That is left up to you.
 
+#### Where the data comes from
+
+Starting with the 1.0 release of this gem the data for tracking numbers including validation information and additional lookup information (such as service type) comes from [tracking_number_data](http://github.com/jkeen/tracking_number_data).
+Bugs relating to detection or unsupported tracking numbers should be filed on that repo.
+
+## Usage
+
+#### Checking an individual tracking number
 ```ruby
 t = TrackingNumber.new("MYSTERY_TRACKING_NUMBER")
 # => #<TrackingNumber::Unknown MYSTERY_TRACKING_NUMBER>
-
 t.valid? #=> false
-t.courier.code #=> :unknown
 
 t = TrackingNumber.new("1Z879E930346834440")
 # => #<TrackingNumber::UPS 1Z879E930346834440>
-
 t.valid? #=> true
-t.carrier #=> :ups
 ```
-Also can take a block of text and find all the valid tracking numbers within it
+
+#### Searching a block of text
+This will return valid tracking numbers contained within a block of text.
 
 ```ruby
 TrackingNumber.search("Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod
@@ -28,6 +34,80 @@ fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in c
 officia deserunt mollit anim id est laborum.")
 
 #=> [#<TrackingNumber::UPS 1Z879E930346834440>, #<TrackingNumber::FedExGround96 9611020987654312345672>]
+```
+
+#### Courier Info
+As of 1.0, the possible courier codes are `[:usps, :fedex, :ups, :ontrac, :dhl, :amazon, :s10, :unknown]`. S10 is the international standard used by local government post offices. When packages are shipped internationally via normal post, it's usually an S10 number.
+
+```ruby
+t = TrackingNumber.new("1Z879E930346834440")
+# => #<TrackingNumber::UPS 1Z879E930346834440>
+
+t.valid? #=> true
+t.courier_code #=> :ups
+t.courier_name #=> "UPS"
+
+
+t = TrackingNumber.new("RB123456785GB")
+t.courier_name #=> "Royal Mail Group plc"
+t.courier_code #=> :s10
+
+t = TrackingNumber.new("RB123456785US")
+t.courier_name #=> "United States Postal Service"
+```
+
+#### Service Type
+Some tracking numbers indicate their service type
+
+```ruby
+t = TrackingNumber.new("1Z879E930346834440")
+t.service_type #=> "UPS United States Ground""
+
+t = TrackingNumber.new("1ZXX3150YW44070023")
+t.service_type #=> "UPS SurePost - Delivered by the USPS"
+
+t = TrackingNumber.new("RB123456785US")
+t.service_type #=> "Letter Post Registered"
+
+```
+
+#### Destination Zip
+Some tracking numbers indicate their destination
+
+```ruby
+t = TrackingNumber.new("1001901781990001000300617767839437")
+t.destination_zip #=> "10003"
+```
+
+#### Package Info
+Some tracking numbers indicate information about their package
+
+```ruby
+t = TrackingNumber.new("012345000000002")
+t.package_type #=> "case/carton"
+
+```
+
+#### Shipper ID
+Some tracking numbers indicate information about their package
+```ruby
+t = TrackingNumber.new("1Z6072AF0320751583")
+t.shipper_id #=> "6072AF" <-- this is Target
+```
+
+#### Decoding
+Most tracking numbers have a format, where each part of the number has meaning. `decode` splits up the number into its named parts.
+```ruby
+  t = TrackingNumber.new("1Z879E930346834440")
+  t.decode
+
+  #=> {
+  #  :serial_number => "879E93034683444",
+  #  :shipper_id => "879E93",
+  #  :service_type => "03",
+  #  :package_id => "4683444",
+  #  :check_digit => "0"
+  # }   
 ```
 
 ## ActiveModel validation
@@ -58,5 +138,5 @@ end
 
 ## Copyright
 
-Copyright (c) 2010 Jeff Keen. See LICENSE.txt for
+Copyright (c) 2010-2018 Jeff Keen. See LICENSE.txt for
 further details.

@@ -57,9 +57,7 @@ class TrackingNumberDataTest < Minitest::Test
             t = klass.new(valid_number)
 
             if (t.matching_additional["Courier"])
-              assert t.courier.name
               assert_equal t.matching_additional["Courier"][:courier], t.courier_name
-              assert_equal t.matching_additional["Courier"][:courier], t.courier.name
             else
               assert_equal courier_name, t.courier_name
             end
@@ -68,32 +66,29 @@ class TrackingNumberDataTest < Minitest::Test
           should "not throw an error when calling #service_type on #{valid_number}" do
             t = klass.new(valid_number)
             service_type = t.service_type
-            assert service_type.is_a?(TrackingNumber::Info) || service_type.nil?
+            assert service_type.is_a?(String) || service_type.nil?
           end
 
           should "not throw an error when calling #destination on #{valid_number}" do
             t = klass.new(valid_number)
-            destination = t.destination
-            assert  destination.is_a?(TrackingNumber::Info) || destination.nil?
+            assert t.destination_zip.is_a?(String) || t.destination_zip.nil?
           end
 
           should "not throw an error when calling #shipper on #{valid_number}" do
             t = klass.new(valid_number)
-            shipper = t.shipper
-            assert shipper.is_a?(TrackingNumber::Info) || shipper.nil?
+            assert t.shipper_id.is_a?(String) || t.shipper_id.nil?
           end
 
-          should "not throw an error when calling #package_info on #{valid_number}" do
+          should "not throw an error when calling #package_type on #{valid_number}" do
             t = klass.new(valid_number)
-            package_info = t.package_info
-            assert package_info.is_a?(TrackingNumber::Info) || package_info.nil?
+            assert t.package_type.is_a?(String) || t.package_type.nil?
           end
-
-          should "not throw an error when calling #info on #{valid_number}" do
-            t = klass.new(valid_number)
-            info = t.info
-            assert info.is_a?(TrackingNumber::Info)
-          end
+          #
+          # should "not throw an error when calling #info on #{valid_number}" do
+          #   t = klass.new(valid_number)
+          #   info = t.info
+          #   assert info.is_a?(String)
+          # end
 
           should "not throw an error when calling #decode on #{valid_number}" do
             t = klass.new(valid_number)
@@ -112,32 +107,31 @@ class TrackingNumberDataTest < Minitest::Test
           should "not throw an error when calling #service_type on invalid number #{invalid_number}" do
             t = klass.new(invalid_number)
             service_type = t.service_type
-            assert service_type.is_a?(TrackingNumber::Info) || service_type.nil?
+            assert service_type.is_a?(String) || service_type.nil?
           end
 
-          should "not throw an error when calling #destination on invalid number #{invalid_number}" do
+          should "not throw an error when calling #destination_zip on invalid number #{invalid_number}" do
             t = klass.new(invalid_number)
-            destination = t.destination
-            assert  destination.is_a?(TrackingNumber::Info) || destination.nil?
+            destination = t.destination_zip
+            assert  destination.is_a?(String) || destination.nil?
           end
 
-          should "not throw an error when calling #shipper on invalid number #{invalid_number}" do
+          should "not throw an error when calling #shipper_id on invalid number #{invalid_number}" do
             t = klass.new(invalid_number)
-            shipper = t.shipper
-            assert shipper.is_a?(TrackingNumber::Info) || shipper.nil?
+            shipper = t.shipper_id
+            assert shipper.is_a?(String) || shipper.nil?
           end
 
-          should "not throw an error when calling #package_info on invalid number #{invalid_number}" do
+          should "not throw an error when calling #package_type on invalid number #{invalid_number}" do
             t = klass.new(invalid_number)
-            package_info = t.package_info
-            assert package_info.is_a?(TrackingNumber::Info) || package_info.nil?
+            assert t.package_type.is_a?(String) || t.package_type.nil?
           end
 
-          should "not throw an error when calling #info on invalid number #{invalid_number}" do
-            t = klass.new(invalid_number)
-            info = t.info
-            assert info.is_a?(TrackingNumber::Info)
-          end
+          # should "not throw an error when calling #info on invalid number #{invalid_number}" do
+          #   t = klass.new(invalid_number)
+          #   info = t.info
+          #   assert info.is_a?(String)
+          # end
 
           should "not throw an error when calling #decode on invalid number #{invalid_number}" do
             t = klass.new(invalid_number)
