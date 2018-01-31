@@ -3,6 +3,9 @@ require 'bundler'
 Bundler::GemHelper.install_tasks
 require 'rake'
 require 'rake/testtask'
+
+import './lib/tasks/stats.rake'
+
 Rake::TestTask.new(:test) do |test|
   test.libs << 'lib' << 'test'
   test.pattern = 'test/**/*_test.rb'
