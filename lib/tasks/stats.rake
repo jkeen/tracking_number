@@ -32,7 +32,7 @@ def has_additional_key_info?(tracking_numbers, key)
   elsif key == :shipping_container_type
     tracking_numbers.any? { |t| t.package_info }
   elsif key == :destination_zip
-    tracking_numbers.any? { |t| t.destination }
+    tracking_numbers.any? { |t| t.destination_zip }
   end
 end
 
