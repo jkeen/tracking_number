@@ -1,4 +1,5 @@
 [![Build Status](https://travis-ci.org/jkeen/tracking_number.svg?branch=master)](https://travis-ci.org/jkeen/tracking_number)
+[![Gem Version](https://badge.fury.io/rb/tracking_number.svg)](https://badge.fury.io/rb/tracking_number)
 [![Gem](https://img.shields.io/gem/dt/tracking_number.svg)]()
 ## Tracking Number (v1.x)
 
