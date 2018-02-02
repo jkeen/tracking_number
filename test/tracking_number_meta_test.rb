@@ -10,20 +10,18 @@ def load_courier_data(name = :all)
   end
 end
 
-class TrackingNumberDataTest < Minitest::Test
+class TrackingNumberMetaTest < Minitest::Test
   load_courier_data(:all).each do |courier_info|
     courier_name = courier_info[:name]
-
     courier_code = courier_info[:courier_code].to_sym
 
     courier_info[:tracking_numbers].each do |tracking_info|
       klass_name = tracking_info[:name].gsub(/[^0-9A-Za-z]/, '')
       klass = "TrackingNumber::#{klass_name}".constantize
-      context "[#{tracking_info[:name]}]" do
 
-        single_valid_number = tracking_info[:test_numbers][:valid].first
-
+      describe "[#{tracking_info[:name]}]" do
         tracking_info[:test_numbers][:valid].each do |valid_number|
+
           should "validate #{valid_number} with #{klass_name}" do
             t = klass.new(valid_number)
             assert_equal courier_code, t.carrier
@@ -83,19 +81,12 @@ class TrackingNumberDataTest < Minitest::Test
             t = klass.new(valid_number)
             assert t.package_type.is_a?(String) || t.package_type.nil?
           end
-          #
-          # should "not throw an error when calling #info on #{valid_number}" do
-          #   t = klass.new(valid_number)
-          #   info = t.info
-          #   assert info.is_a?(String)
-          # end
 
           should "not throw an error when calling #decode on #{valid_number}" do
             t = klass.new(valid_number)
             decode = t.decode
             assert decode.is_a?(Hash)
           end
-
         end
 
         tracking_info[:test_numbers][:invalid].each do |invalid_number|
@@ -126,12 +117,6 @@ class TrackingNumberDataTest < Minitest::Test
             t = klass.new(invalid_number)
             assert t.package_type.is_a?(String) || t.package_type.nil?
           end
-
-          # should "not throw an error when calling #info on invalid number #{invalid_number}" do
-          #   t = klass.new(invalid_number)
-          #   info = t.info
-          #   assert info.is_a?(String)
-          # end
 
           should "not throw an error when calling #decode on invalid number #{invalid_number}" do
             t = klass.new(invalid_number)
