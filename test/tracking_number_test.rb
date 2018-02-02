@@ -102,7 +102,7 @@ class TrackingNumberTest < Minitest::Test
     end
 
     should "report correct shipper_id" do
-      assert_nil tracking_number.shipper_id
+      assert_equal "071790000", tracking_number.shipper_id
     end
 
     should "report correct no destination" do

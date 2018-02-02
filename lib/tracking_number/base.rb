@@ -162,7 +162,7 @@ module TrackingNumber
 
     def package_type
       if matching_additional["ContainerType"]
-        @package_type ||= Info.new(matching_additional["Container Type"]).package_info.name
+        @package_type ||= Info.new(matching_additional["Container Type"]).name
       end
     end
 
