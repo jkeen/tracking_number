@@ -7,7 +7,6 @@ require 'tracking_number/base'
 require 'tracking_number/info'
 require 'tracking_number/unknown'
 require 'checksum_validations'
-require 'active_support'
 require 'active_support/core_ext/string'
 require 'active_support/core_ext/hash'
 require "awesome_print"

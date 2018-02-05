@@ -1,5 +1,4 @@
 require 'checksum_validations'
-require 'active_support'
 
 module TrackingNumber
   class Base
