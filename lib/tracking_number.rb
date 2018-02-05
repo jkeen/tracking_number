@@ -1,7 +1,5 @@
 # Identify if tracking numbers are valid, and which service they belong to
 
-# Information on validating tracking numbers found here:
-# http://answers.google.com/answers/threadview/id/207899.html
 require 'json'
 require 'tracking_number/base'
 require 'tracking_number/info'
@@ -9,7 +7,6 @@ require 'tracking_number/unknown'
 require 'checksum_validations'
 require 'active_support/core_ext/string'
 require 'active_support/core_ext/hash'
-require "awesome_print"
 
 if defined?(ActiveModel::EachValidator)
   require 'tracking_number/active_model_validator'
