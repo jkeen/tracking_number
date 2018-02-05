@@ -1,5 +1,4 @@
 require 'checksum_validations'
-require 'pry'
 require 'active_support'
 
 module TrackingNumber
