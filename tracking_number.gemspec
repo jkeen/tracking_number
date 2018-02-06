@@ -13,8 +13,25 @@ Gem::Specification.new do |s|
   s.extra_rdoc_files = [
     "LICENSE.txt",
   ]
+
   s.files         = `git ls-files`.split("\n")
+
+  gem_dir = File.expand_path(File.dirname(__FILE__)) + "/"
+
+  `git submodule --quiet foreach pwd`.split($\).each do |submodule_path|
+    Dir.chdir(submodule_path.chomp) do
+      submodule_relative_path = submodule_path.sub gem_dir, ""
+      # issue git ls-files in submodule's directory and
+      # prepend the submodule path to create absolute file paths
+
+      `git ls-files -- couriers/*`.split($\).each do |filename|
+        s.files << "#{submodule_relative_path}/#{filename}"
+      end
+    end
+  end
+
   s.test_files    = `git ls-files -- {test,spec,features}/*`.split("\n")
+
   s.executables   = `git ls-files -- bin/*`.split("\n").map{ |f| File.basename(f) }
   s.require_paths = ["lib"]
   s.homepage = %q{http://github.com/jkeen/tracking_number}
