@@ -9,6 +9,10 @@ It detects tracking numbers from UPS, FedEx, DHL, USPS, OnTrac, Amazon Logistics
 
 This gem does not do tracking. That is left up to you.
 
+#### New in 1.0
+
+Starting with the 1.0 release the specifications for detecting tracking numbers have been moved into a separate repository ([tracking_number_data](http://github.com/jkeen/tracking_number_data)) that this gem relies on. I did this so a) we can have a single place to document all tracking number types and it can be more of a crowdsourced effort, and b) so clients can be written in other languages easier.
+
 ## Usage
 
 #### Checking an individual tracking number
@@ -118,9 +122,6 @@ class Shipment < ActiveRecord::Base
   validates :tracking, :tracking_number => { :except => 'magic-hand-delivery' }
 end
 ```
-
-## Where the data comes from
-Starting with the 1.0 release of this gem the data for tracking numbers has been extracted into a separate repository ([tracking_number_data](http://github.com/jkeen/tracking_number_data)) so non-ruby clients can benefit from the detection/documentation that used to be contained deep in the code of this gem. If you want to write a client in some other language, that's the stuff you want.
 
 ## Contributing to tracking_number
 * Check out the latest master to make sure the feature hasn't been implemented or the bug hasn't been fixed yet
