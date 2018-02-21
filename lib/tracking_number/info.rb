@@ -11,8 +11,16 @@ module TrackingNumber
       end
     end
 
+    def method_missing(*args)
+      nil
+    end
+
     def to_s
       @default || @name
+    end
+
+    def to_json
+
     end
   end
 end

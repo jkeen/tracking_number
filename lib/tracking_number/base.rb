@@ -1,5 +1,3 @@
-require 'checksum_validations'
-
 module TrackingNumber
   class Base
     attr_accessor :tracking_number
@@ -95,7 +93,7 @@ module TrackingNumber
       name            = checksum_info[:name]
       method_name     = "validates_#{name}?"
 
-      ChecksumValidations.send(method_name, serial_number, check_digit, checksum_info)
+      TrackingNumber::ChecksumValidations.send(method_name, serial_number, check_digit, checksum_info)
     end
 
     def to_s
@@ -113,8 +111,7 @@ module TrackingNumber
         :service_description => service_description,
         :destination_zip => destination_zip,
         :shipper_id => shipper_id,
-        :package_type => package_type,
-        :package_description => package_description
+        :package_type => package_type
       })
     end
 
