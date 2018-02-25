@@ -21,13 +21,6 @@ class TrackingNumberMetaTest < Minitest::Test
 
       describe "[#{tracking_info[:name]}]" do
         tracking_info[:test_numbers][:valid].each do |valid_number|
-
-          should "validate #{valid_number} with #{klass_name}" do
-            t = klass.new(valid_number)
-            assert_equal courier_code, t.carrier
-            assert t.valid?, "should be valid"
-          end
-
           should "detect #{valid_number} as #{klass_name}" do
             #TODO fix this multiple matching thing
             matches = TrackingNumber.search(valid_number)
@@ -45,47 +38,53 @@ class TrackingNumberMetaTest < Minitest::Test
             should_detect_number_variants(valid_number, "TrackingNumber::#{klass_name}".constantize)
           end
 
-          should "return correct courier code on #{valid_number} when calling #courier_code" do
-            t = klass.new(valid_number)
-            assert_equal courier_info[:courier_code].to_sym, t.courier_code
-            assert_equal courier_info[:courier_code].to_sym, t.courier_code
-          end
+          context "number test" do
+            tracking_number = klass.new(valid_number)
 
-          should "return correct courier name on #{valid_number} when calling #courier_name" do
-            t = klass.new(valid_number)
-
-            if (t.matching_additional["Courier"])
-              assert_equal t.matching_additional["Courier"][:courier], t.courier_name
-            else
-              assert_equal courier_name, t.courier_name
+            should "validate #{valid_number} with #{klass_name}" do
+              assert_equal courier_code, tracking_number.carrier
+              assert tracking_number.valid?, "should be valid"
             end
-          end
 
-          should "not throw an error when calling #service_type on #{valid_number}" do
-            t = klass.new(valid_number)
-            service_type = t.service_type
-            assert service_type.is_a?(String) || service_type.nil?
-          end
+            should "return correct courier code on #{valid_number} when calling #courier_code" do
+              tracking_number = klass.new(valid_number)
+              assert_equal courier_info[:courier_code].to_sym, tracking_number.courier_code
+              assert_equal courier_info[:courier_code].to_sym,tracking_number.courier_code
+            end
 
-          should "not throw an error when calling #destination on #{valid_number}" do
-            t = klass.new(valid_number)
-            assert t.destination_zip.is_a?(String) || t.destination_zip.nil?
-          end
+            should "return correct courier name on #{valid_number} when calling #courier_name" do
+              if (tracking_number.matching_additional["Courier"])
+                assert_equal tracking_number.matching_additional["Courier"][:courier], tracking_number.courier_name
+              else
+                assert_equal courier_name, tracking_number.courier_name
+              end
+            end
 
-          should "not throw an error when calling #shipper on #{valid_number}" do
-            t = klass.new(valid_number)
-            assert t.shipper_id.is_a?(String) || t.shipper_id.nil?
-          end
+            should "not throw an error when calling #service_type on #{valid_number}" do
+              service_type = tracking_number.service_type
+              assert service_type.is_a?(String) || service_type.nil?
+            end
 
-          should "not throw an error when calling #package_type on #{valid_number}" do
-            t = klass.new(valid_number)
-            assert t.package_type.is_a?(String) || t.package_type.nil?
-          end
+            should "not throw an error when calling #destination on #{valid_number}" do
+              assert tracking_number.destination_zip.is_a?(String) || tracking_number.destination_zip.nil?
+            end
 
-          should "not throw an error when calling #decode on #{valid_number}" do
-            t = klass.new(valid_number)
-            decode = t.decode
-            assert decode.is_a?(Hash)
+            should "not throw an error when calling #shipper on #{valid_number}" do
+              t = klass.new(valid_number)
+              assert tracking_number.shipper_id.is_a?(String) || tracking_number.shipper_id.nil?
+            end
+
+            should "not throw an error when calling #package_type on #{valid_number}" do
+              t = klass.new(valid_number)
+              assert tracking_number.package_type.is_a?(String) || tracking_number.package_type.nil?
+            end
+
+            should "not throw an error when calling #decode on #{valid_number}" do
+              t = klass.new(valid_number)
+              decode = tracking_number.decode
+              assert decode.is_a?(Hash)
+            end
+
           end
         end
 

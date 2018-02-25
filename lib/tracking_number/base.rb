@@ -169,6 +169,21 @@ module TrackingNumber
       match_group("ShipperId")
     end
 
+    def tracking_url
+      url = nil
+      if matching_additional["Courier"]
+        url = matching_additional["Courier"][:tracking_url]
+      else
+        if self.class.const_defined?(:TRACKING_URL)
+          url = self.class.const_get(:TRACKING_URL)
+        end
+      end
+
+      if url
+        url.sub('%s', self.tracking_number)
+      end
+    end
+
     def matching_additional
       additional = self.class.const_get(:ADDITIONAL) || []
 

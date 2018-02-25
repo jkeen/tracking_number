@@ -64,6 +64,11 @@ class TrackingNumberTest < Minitest::Test
     should "report correct no package info" do
       assert_nil tracking_number.package_type
     end
+
+    should "have valid tracking url" do
+      assert tracking_number.tracking_url, "Tracking url should not be blank"
+      assert tracking_number.tracking_url.include?(tracking_number.tracking_number), "Should include tracking number in the url"
+    end
   end
 
   context "tracking number additional data for s10" do
@@ -112,6 +117,11 @@ class TrackingNumberTest < Minitest::Test
     should "report correct no package info" do
       assert_nil tracking_number.package_type
     end
+
+    should "have valid tracking url" do
+      assert tracking_number.tracking_url, "Tracking url should not be blank"
+      assert tracking_number.tracking_url.include?(tracking_number.tracking_number), "Should include tracking number in the url"
+    end
   end
 
   context "tracking number additional data for USPS 34v2" do
@@ -135,6 +145,11 @@ class TrackingNumberTest < Minitest::Test
 
     should "report correct no package info" do
       assert_nil tracking_number.package_type
+    end
+
+    should "have valid tracking url" do
+      assert tracking_number.tracking_url, "Tracking url should not be blank"
+      assert tracking_number.tracking_url.include?(tracking_number.tracking_number), "Should include tracking number in the url"
     end
   end
 end

@@ -59,6 +59,7 @@ module TrackingNumber
 
         klass.const_set("VALIDATION", tracking_info[:validation])
         klass.const_set("ADDITIONAL", tracking_info[:additional])
+        klass.const_set("TRACKING_URL", tracking_info[:tracking_url])
 
         return klass
       end
