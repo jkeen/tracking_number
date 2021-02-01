@@ -134,5 +134,5 @@ end
 
 ## Copyright
 
-Copyright (c) 2010-2018 Jeff Keen. See LICENSE.txt for
+Copyright (c) 2010-2021 Jeff Keen. See LICENSE.txt for
 further details.
