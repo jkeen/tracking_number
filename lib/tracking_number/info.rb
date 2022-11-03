@@ -11,8 +11,8 @@ module TrackingNumber
       end
     end
 
-    def method_missing(*args)
-      nil
+    def method_missing(name, *args)
+      self.instance_variable_get("@#{name}")
     end
 
     def to_s
