@@ -1,4 +1,6 @@
 # Changelog
+## [v1.1.2](https://github.com/jkeen/tracking_number/tree/v1.1.1) (2022-11-03)
+Add method to help tracking_number_data test itself better
 ## [v1.1.1](https://github.com/jkeen/tracking_number/tree/v1.1.1) (2022-11-03)
 Fix gem build error
 
