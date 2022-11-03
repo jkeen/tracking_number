@@ -1,6 +1,5 @@
 # frozen_string_literal: true
 
-require 'English'
 lib = File.expand_path('lib', __dir__)
 $LOAD_PATH.unshift(lib) unless $LOAD_PATH.include?(lib)
 require 'tracking_number/version'
@@ -18,8 +17,7 @@ Gem::Specification.new do |s|
   ]
 
   s.files = `git ls-files`.split("\n")
-
-  gem_dir = "#{__dir__}/"
+  gem_dir = "#{File.expand_path(File.join(__FILE__, '..'))}/"
 
   `git submodule --quiet foreach pwd`.split($OUTPUT_RECORD_SEPARATOR).each do |submodule_path|
     Dir.chdir(submodule_path.chomp) do
@@ -28,7 +26,9 @@ Gem::Specification.new do |s|
       # prepend the submodule path to create absolute file paths
 
       `git ls-files -- couriers/*`.split($OUTPUT_RECORD_SEPARATOR).each do |filename|
-        s.files << "#{submodule_relative_path}/#{filename}"
+        file_path = "#{submodule_relative_path}/#{filename}"
+        puts "adding file #{file_path}"
+        s.files << file_path
       end
     end
   end
@@ -39,7 +39,6 @@ Gem::Specification.new do |s|
   s.require_paths = ['lib']
   s.homepage = 'http://github.com/jkeen/tracking_number'
   s.licenses = ['MIT']
-  s.rubygems_version = '3.2.3'
   s.summary = 'Identifies valid tracking numbers'
 
   s.add_runtime_dependency('activesupport', '>= 4.2.5')
