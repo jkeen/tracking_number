@@ -39,11 +39,11 @@ Gem::Specification.new do |s|
   s.require_paths = ['lib']
   s.homepage = 'http://github.com/jkeen/tracking_number'
   s.licenses = ['MIT']
-  s.rubygems_version = '1.7.2'
+  s.rubygems_version = '3.2.3'
   s.summary = 'Identifies valid tracking numbers'
 
   s.add_runtime_dependency('activesupport', '>= 4.2.5')
-  s.add_runtime_dependency('json')
+  s.add_runtime_dependency('json', '>= 1.8.3')
   s.add_development_dependency('activemodel', '> 4.2.5.1')
   s.add_development_dependency('minitest', '~> 5.5')
   s.add_development_dependency('minitest-reporters', '~> 1.1')
