@@ -1,4 +1,8 @@
 # Changelog
+
+## [v1.2](https://github.com/jkeen/tracking_number/tree/v1.2) (2022-11-03)
+Update tracking number definitions from [tracking_number_data](https://github.com/jkeen/tracking_number_data). Now includes Lasership, UPS Waybill, Landmark, Canada Post, On Trac (D*)
+
 ## [v1.1.2](https://github.com/jkeen/tracking_number/tree/v1.1.1) (2022-11-03)
 Add method to help tracking_number_data test itself better
 ## [v1.1.1](https://github.com/jkeen/tracking_number/tree/v1.1.1) (2022-11-03)
