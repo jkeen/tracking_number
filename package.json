@@ -18,7 +18,8 @@
     "semantic-release-rubygem": "^1.2.0",
     "semantic-release": "^19.0.3",
     "@semantic-release/changelog": "^6.0.1",
-    "@semantic-release/git": "^10.0.1" },
+    "@semantic-release/git": "^10.0.1" 
+  },
   "release": {
     "branches": ["main"],
     "plugins": [
@@ -74,12 +75,6 @@
         {
           "changelogTitle": "tracking_number changelog",
           "changelogFile": "CHANGELOG.md"
-        }
-      ],
-      [
-        "@semantic-release/npm",
-        {
-          "npmPublish": false
         }
       ],
       "semantic-release-rubygem",
