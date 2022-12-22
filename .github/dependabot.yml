@@ -16,3 +16,7 @@ updates:
   - dependency-name: rake
     versions:
     - 13.0.3
+- package-ecosystem: "gitsubmodule"
+  directory: "lib/data"
+  schedule:
+    interval: "daily"
