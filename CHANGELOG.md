@@ -1,3 +1,7 @@
+tracking_number changelog
+
+## [1.3.2](https://github.com/jkeen/tracking_number/compare/v1.3.1...v1.3.2) (2022-12-23)
+
 # Changelog
 
 ## [v1.2](https://github.com/jkeen/tracking_number/tree/v1.2) (2022-11-03)
