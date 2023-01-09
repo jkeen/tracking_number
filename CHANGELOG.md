@@ -1,5 +1,12 @@
 tracking_number changelog
 
+## [1.3.5](https://github.com/jkeen/tracking_number/compare/v1.3.4...v1.3.5) (2023-01-09)
+
+
+### Bug Fixes
+
+* modify release process to include submodules, the lack of which caused the 1.3.2 gem release to not work at all ([578af83](https://github.com/jkeen/tracking_number/commit/578af83d1b9da51c6edb8400d3aba8b195b66629))
+
 ## [1.3.2](https://github.com/jkeen/tracking_number/compare/v1.3.1...v1.3.2) (2022-12-23)
 
 # Changelog
