@@ -17,19 +17,26 @@ Gem::Specification.new do |s|
   ]
 
   s.files = `git ls-files`.split("\n")
-  gem_dir = "#{File.expand_path(File.join(__FILE__, '..'))}/"
 
   `git submodule --quiet foreach pwd`.split($OUTPUT_RECORD_SEPARATOR).each do |submodule_path|
     Dir.chdir(submodule_path.chomp) do
-      submodule_relative_path = submodule_path.sub gem_dir, ''
-      # issue git ls-files in submodule's directory and
-      # prepend the submodule path to create absolute file paths
 
-      `git ls-files -- couriers/*`.split($OUTPUT_RECORD_SEPARATOR).each do |filename|
-        file_path = "#{submodule_relative_path}/#{filename}"
-        puts "adding file #{file_path}"
-        s.files << file_path
+      # issue git ls-files in submodule's directory
+      submodule_files = `git ls-files -- couriers/*`.split($OUTPUT_RECORD_SEPARATOR)
+
+      # prepend the submodule path to create absolute file paths
+      submodule_files_fullpaths = submodule_files.map do |filename|
+        "#{submodule_path}/#{filename}"
       end
+
+      # remove leading path parts to get paths relative to the gem's root dir
+      # (this assumes, that the gemspec resides in the gem's root dir)
+      submodule_files_paths = submodule_files_fullpaths.map do |filename|
+        filename.gsub "#{File.dirname(__FILE__)}/", ''
+      end
+
+      # add relative paths to gem.files
+      s.files += submodule_files_paths
     end
   end
 

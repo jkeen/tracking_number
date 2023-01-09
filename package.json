@@ -15,7 +15,7 @@
     "semantic-release": "semantic-release"
   },
   "devDependencies": {
-    "semantic-release-rubygem": "^1.2.0",
+    "@klueless-js/semantic-release-rubygem": "https://github.com/klueless-js/semantic-release-rubygem",
     "semantic-release": "^19.0.3",
     "@semantic-release/changelog": "^6.0.1",
     "@semantic-release/git": "^10.0.1" 
@@ -77,7 +77,13 @@
           "changelogFile": "CHANGELOG.md"
         }
       ],
-      "semantic-release-rubygem",
+      ["@klueless-js/semantic-release-rubygem", {
+        "gemHost": "https//rubygems.org",
+        "updateGemfileLock": false,
+        "gemPublish": true,
+        "gemFileDir": false,
+        "pkgRoot": "."
+      }],
       "@semantic-release/github",
       [
         "@semantic-release/git",
