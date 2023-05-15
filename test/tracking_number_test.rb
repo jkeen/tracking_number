@@ -147,9 +147,77 @@ class TrackingNumberTest < Minitest::Test
       assert_nil tracking_number.package_type
     end
 
+    should "report no partnership" do
+      assert_equal false, tracking_number.partnership?
+    end
+
+    should "report no partners" do
+      assert_equal nil, tracking_number.partners
+    end
+
+    should "report as shipper and carrier" do
+      assert_equal true, tracking_number.shipper?
+      assert_equal true, tracking_number.carrier?
+    end
+
     should "have valid tracking url" do
       assert tracking_number.tracking_url, "Tracking url should not be blank"
       assert tracking_number.tracking_url.include?(tracking_number.tracking_number), "Should include tracking number in the url"
+    end
+  end
+
+  context "tracking number partnership data for FedExSmartPost/USPS91" do
+    tracking_number = TrackingNumber.new("420 11213 92 6129098349792366623 8")
+
+    should "report correct courier name" do
+      assert_equal "United States Postal Service", tracking_number.courier_name
+    end
+
+    should "report correct courier code" do
+      assert_equal :usps, tracking_number.courier_code
+    end
+
+    should "report correct service type" do
+      assert_equal "Fedex Smart Post", tracking_number.service_type
+    end
+
+    should "report partnership" do
+      assert_equal true, tracking_number.partnership?
+    end
+
+    should "report not shipper side of the partnership" do
+      assert_equal false, tracking_number.shipper?
+    end
+
+    should "report carrier side of the partnership" do
+      assert_equal true, tracking_number.carrier?
+    end
+
+    should "report partner pairing" do
+      assert_equal :fedex, tracking_number.partners.shipper.courier_code
+    end
+  end
+
+  context "searching numbers that have partners" do
+    partnership_number = "420 11213 92 6129098349792366623 8"
+    single_number = "0307 1790 0005 2348 3741"
+  
+    search_string = ["number that matches two services", partnership_number, " number that matches only one: ", single_number, "let's see if that does it"].join(' ')
+
+    should "match only carriers by default" do
+      matches = TrackingNumber.search(search_string)
+      assert_equal 2, matches.size
+      assert_equal [true, true], matches.collect { |t| t.carrier? }
+    end
+
+    should "match all if specified" do
+      matches = TrackingNumber.search(search_string, match: :all)
+      assert_equal 3, matches.size
+    end
+
+    should "match only shippers if specified" do
+      matches = TrackingNumber.search(search_string, match: :shipper)
+      assert_equal 2, matches.size
     end
   end
 end
