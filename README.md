@@ -139,6 +139,9 @@ Some tracking numbers match multiple carriers, because they belong to multiple c
   results = TrackingNumber.search('420112139261290983497923666238') 
   => [#<TrackingNumber::USPS91:0x26ac0 420112139261290983497923666238>]
 
+  all_results = TrackingNumber.search('420112139261290983497923666238', match: :all) 
+  => [#<TrackingNumber::FedExSmartPost:0x30624 420112139261290983497923666238>, #<TrackingNumber::USPS91:0x26ac0 420112139261290983497923666238>]
+
   tn = results.first
   tn.shipper? #=> false
   tn.carrier? #=> true
