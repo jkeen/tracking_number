@@ -1,5 +1,13 @@
 tracking_number changelog
 
+# [1.4.0](https://github.com/jkeen/tracking_number/compare/v1.3.5...v1.4.0) (2023-05-15)
+
+
+### Features
+
+* add partnership support with tracking_number_data 1.5 ([75fe530](https://github.com/jkeen/tracking_number/commit/75fe5304e933679aff89a91a93d2b7cf58c1fe5c))
+* update to tracking number data 1.5 ([237ad3c](https://github.com/jkeen/tracking_number/commit/237ad3c82230d39b415df56eb8c8c9eeb22ba15c))
+
 ## [1.3.5](https://github.com/jkeen/tracking_number/compare/v1.3.4...v1.3.5) (2023-01-09)
 
 
