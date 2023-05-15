@@ -1,6 +1,11 @@
-[![Build Status](https://travis-ci.org/jkeen/tracking_number.svg?branch=master)](https://travis-ci.org/jkeen/tracking_number)
+[![Ruby](https://github.com/jkeen/tracking_number/actions/workflows/ruby.yml/badge.svg)](https://github.com/jkeen/tracking_number/actions/workflows/ruby.yml)
 [![Gem Version](https://badge.fury.io/rb/tracking_number.svg)](https://badge.fury.io/rb/tracking_number)
 [![Gem](https://img.shields.io/gem/dt/tracking_number.svg)]()
+
+> Hey there tracking number enthusiast! I hope this project has been useful for you, and I sure would appreciate a cup or two of covfefe slid my way to keep this resource going.
+> 
+> <a href="https://www.buymeacoffee.com/jeffkeen" target="_blank"><img src="https://cdn.buymeacoffee.com/buttons/v2/default-yellow.png" alt="Buy Me A Coffee" style="height: auto !important;width: 150px !important;" ></a>
+
 ## Tracking Number (v1.x)
 
 This gem identifies valid tracking numbers and can tell you a little bit about the shipment just from the number—there's quite a bit of info tucked away into those numbers, it turns out.
