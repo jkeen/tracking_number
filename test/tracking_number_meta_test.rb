@@ -23,7 +23,7 @@ class TrackingNumberMetaTest < Minitest::Test
         tracking_info[:test_numbers][:valid].each do |valid_number|
           should "detect #{valid_number} as #{klass_name}" do
             #TODO fix this multiple matching thing
-            matches = TrackingNumber.search(valid_number)
+            matches = TrackingNumber.search(valid_number, match: :all)
             assert matches.collect(&:class).include?(klass)
           end
 

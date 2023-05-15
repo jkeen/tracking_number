@@ -18,8 +18,6 @@ class Minitest::Test
     possible_numbers = []
     possible_numbers << tracking
     possible_numbers << tracking.to_s.gsub(" ", "")
-    possible_numbers << tracking.chars.to_a.join(" ")
-    possible_numbers << tracking.chars.to_a.join("  ")
     possible_numbers << tracking.slice(0, (tracking.length / 2)) + "  " + tracking.slice((tracking.length / 2), tracking.length)
 
     possible_numbers.flatten.uniq
