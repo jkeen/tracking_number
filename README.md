@@ -92,6 +92,28 @@ t = TrackingNumber.new("012345000000002")
 t.package_type #=> "case/carton"
 ```
 
+#### Tracking URL
+Get the tracking url from the shipper
+```ruby
+t = TrackingNumber.new("1Z6072AF0320751583")
+t.tracking_url #=> ""https://wwwapps.ups.com/WebTracking/track?track=yes&trackNums=1Z6072AF0320751583"
+```
+
+#### All the info we have
+Get a object of all the info we have on the thing
+```ruby
+t = TrackingNumber.new("1Z6072AF0320751583")
+t.info #=>  @courier=#<TrackingNumber::Info:0x000000010a45fed8 @code=:ups, @name="UPS">,
+       #    @decode={:serial_number=>"6072AF032075158", :shipper_id=>"6072AF", :service_type=>"03", :package_id=>"2075158", :check_digit=>"3"},
+       #    @destination_zip=nil,
+       #    @package_type=nil,
+       #    @partners=nil,
+       #    @service_description=nil,
+       #    @service_type="UPS United States Ground",
+       #    @shipper_id="6072AF",
+       #    @tracking_url="https://wwwapps.ups.com/WebTracking/track?track=yes&trackNums=1Z6072AF0320751583">
+```
+
 #### Decoding
 Most tracking numbers have a format where each part of the number has meaning. `decode` splits up the number into its known named parts.
 ```ruby
@@ -105,6 +127,29 @@ Most tracking numbers have a format where each part of the number has meaning. `
   #  :package_id => "4683444",
   #  :check_digit => "0"
   # }   
+```
+
+#### Multiple shippers / Partnerships
+Some tracking numbers match multiple carriers, because they belong to multiple carriers. Some shipments like Fedex Smartpost contract the "last mile" out to USPS. 
+
+```ruby
+  # Search defaults to only showing numbers that fulfill the carrier side of the relationship 
+  # (if a partnership exists at all), as this is the end a consumer would most likely be interested in.
+
+  results = TrackingNumber.search('420112139261290983497923666238') 
+  => [#<TrackingNumber::USPS91:0x26ac0 420112139261290983497923666238>]
+
+  tn = results.first
+  tn.shipper? #=> false
+  tn.carrier? #=> true
+  tn.partnership? #=> true
+  tn.partners
+  #=> <struct TrackingNumber::Base::PartnerStruct
+  #       shipper=#<TrackingNumber::FedExSmartPost:0x30624 420112139261290983497923666238>,
+  #       carrier=#<TrackingNumber::USPS91:0x2f1fc 420112139261290983497923666238>>
+
+  tn.partners.shipper #=> #<TrackingNumber::FedExSmartPost:0x30624 420112139261290983497923666238>
+  tn.partners.carrier == tn #=> true
 ```
 
 ## ActiveModel validation
