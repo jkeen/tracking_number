@@ -55,7 +55,7 @@ Gem::Specification.new do |s|
   s.add_development_dependency('activemodel', '> 4.2.5.1')
   s.add_development_dependency('minitest', '~> 5.5')
   s.add_development_dependency('minitest-reporters', '~> 1.1')
-  s.add_development_dependency('rake', '~> 10.4.2')
+  s.add_development_dependency('rake', '~> 13.0')
   s.add_development_dependency('shoulda')
   s.add_development_dependency('simplecov')
   s.add_development_dependency('terminal-table')
