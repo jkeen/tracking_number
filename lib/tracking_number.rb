@@ -39,16 +39,13 @@ module TrackingNumber
   end
 
   def self.detect(tracking_number, match: :carrier)
-    tn = nil
-    (TYPES + [Unknown]).each do |test_klass|
-      tn = test_klass.new(tracking_number)
-      if tn.valid? && (!match || match == :all)
-        break
-      elsif tn.valid? && tn.send("#{match}?")
-        break
-      end
+    all_matches = search(tracking_number, match: match)
+
+    if all_matches.empty?
+      Unknown.new(tracking_number)
+    else
+      all_matches.max_by(&:confidence)
     end
-    tn
   end
 
   def self.detect_all(tracking_number)

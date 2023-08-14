@@ -22,6 +22,18 @@ module TrackingNumber
       false
     end
 
+    def shipper?
+      false
+    end
+
+    def carrier?
+      false
+    end
+
+    def partnership?
+      false
+    end
+
     def decode
       {}
     end

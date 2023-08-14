@@ -97,12 +97,31 @@ module TrackingNumber
       TrackingNumber::ChecksumValidations.send(method_name, serial_number, check_digit, checksum_info)
     end
 
+    def checksum?
+      !!self.class.const_get(:VALIDATION)[:checksum]
+    end
+
+    LENGTH_WEIGHT = 0.1
+    CHECKSUM_WEIGHT = 5.0
+
+    def confidence
+      (checksum? ? CHECKSUM_WEIGHT : 0) + tracking_number.length * LENGTH_WEIGHT
+    end
+
     def to_s
       tracking_number
     end
 
     def inspect
-      format('#<%s:%#0x %s>', self.class.to_s, object_id, tracking_number)
+      format('#<%s:%#0x %s%s>', self.class.to_s, object_id, tracking_number, partnership_inspect)
+    end
+
+    def partnership_inspect
+      if shipper? ^ carrier?
+        ' (partnership)'
+      else
+        ''
+      end
     end
 
     def info
@@ -169,6 +188,7 @@ module TrackingNumber
       return unless (partner_tn = find_matching_partner)
 
       possible_twin = partner_tn.send(:find_matching_partner)
+
       if possible_twin.instance_of?(self.class) && possible_twin.tracking_number == tracking_number
         partner_hash[partner_data[:partner_type].to_sym] = partner_tn
         partner_hash[partner_tn.partner_data[:partner_type].to_sym] = self

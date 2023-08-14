@@ -51,9 +51,9 @@ class Minitest::Test
   end
 
   def should_fail_on_check_digit_changes(valid_number)
-    digits = valid_number.gsub(/\s/, "").chars.to_a
+    digits = valid_number.gsub(/\s/, "").chars.compact.to_a
     last = digits.pop.to_i
-    digits << (last  < 2 ? last + 3 : last - 3).to_s
+    digits << (last <= 2 ? last + 3 : last - 3).to_s
     invalid_number = digits.join
     t = TrackingNumber.new(invalid_number)
     assert !t.valid?, "#{invalid_number} reported as a valid #{t.class}, and it shouldn't be"

@@ -200,7 +200,7 @@ class TrackingNumberTest < Minitest::Test
 
   context "searching numbers that have partners" do
     partnership_number = "420 11213 92 6129098349792366623 8"
-    single_number = "0307 1790 0005 2348 3741"
+    single_number = "92001903060085300042901077"
   
     search_string = ["number that matches two services", partnership_number, " number that matches only one: ", single_number, "let's see if that does it"].join(' ')
 
