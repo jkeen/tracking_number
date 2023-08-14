@@ -1,5 +1,13 @@
 tracking_number changelog
 
+# [1.5.0](https://github.com/jkeen/tracking_number/compare/v1.4.1...v1.5.0) (2023-08-14)
+
+
+### Features
+
+* include partnership indicator in inspect ([834a8c4](https://github.com/jkeen/tracking_number/commit/834a8c461ef7c58bff9e1e3ea43e65f6d11c3897))
+* update to tracking_number_data 1.6.0 ([6c6293e](https://github.com/jkeen/tracking_number/commit/6c6293edc31de905163d0cee2a76e5b0e27c5f62))
+
 ## [1.4.1](https://github.com/jkeen/tracking_number/compare/v1.4.0...v1.4.1) (2023-05-19)
 
 # [1.4.0](https://github.com/jkeen/tracking_number/compare/v1.3.5...v1.4.0) (2023-05-15)
