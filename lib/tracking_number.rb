@@ -7,8 +7,7 @@ require 'tracking_number/base'
 require 'tracking_number/info'
 require 'tracking_number/partnership'
 require 'tracking_number/unknown'
-require 'active_support/core_ext/string'
-require 'active_support/core_ext/hash'
+require 'active_support/all'
 
 if defined?(ActiveModel::EachValidator)
   require 'tracking_number/active_model_validator'
