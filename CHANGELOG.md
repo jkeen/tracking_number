@@ -1,5 +1,17 @@
 tracking_number changelog
 
+# [1.6.0](https://github.com/jkeen/tracking_number/compare/v1.5.0...v1.6.0) (2023-11-14)
+
+
+### Bug Fixes
+
+* resolve error with active support deprecator ([8b97160](https://github.com/jkeen/tracking_number/commit/8b97160a2178b771b340f8459bfa77db5791aeb2))
+
+
+### Features
+
+* update to tracking_number_data 1.6.1 ([811a07b](https://github.com/jkeen/tracking_number/commit/811a07bf10d171b56069c927d84266e8a931e073))
+
 # [1.5.0](https://github.com/jkeen/tracking_number/compare/v1.4.1...v1.5.0) (2023-08-14)
 
 
