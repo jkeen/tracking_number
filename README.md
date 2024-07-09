@@ -2,7 +2,7 @@
 [![Gem Version](https://badge.fury.io/rb/tracking_number.svg)](https://badge.fury.io/rb/tracking_number)
 [![Gem](https://img.shields.io/gem/dt/tracking_number.svg)]()
 
-> Hey there tracking number enthusiast! I hope this project has been useful for you, and I sure would appreciate a cup or two of covfefe slid my way to keep this resource going.
+> Hey there tracking number enthusiast! I don't use this project in any production capacity, and really never have. I am not a tracking number expert, and I don't have inside connections to a shipping company—I'm just a guy that once tried to make a package tracking app and this gem is all that survived. When I have absolutely nothing to do it's kinda fun to tinker with, but time has become more and more of a precious resource. Anyway, maintaining this is thankless work, and if this project has been useful for you I sure would appreciate a cup or two of coffee slid my way as a token of appreciation. A PR would also be nice. 
 > 
 > <a href="https://www.buymeacoffee.com/jeffkeen" target="_blank"><img src="https://cdn.buymeacoffee.com/buttons/v2/default-yellow.png" alt="Buy Me A Coffee" style="height: auto !important;width: 150px !important;" ></a>
 
