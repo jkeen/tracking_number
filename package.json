@@ -15,13 +15,15 @@
     "semantic-release": "semantic-release"
   },
   "devDependencies": {
-    "semantic-release-rubygem": "^1.2.0",
-    "semantic-release": "^19.0.3",
     "@semantic-release/changelog": "^6.0.1",
-    "@semantic-release/git": "^10.0.1" 
+    "@semantic-release/git": "^10.0.1",
+    "semantic-release": "^19.0.3",
+    "semantic-release-rubygem": "^1.2.0"
   },
   "release": {
-    "branches": ["main"],
+    "branches": [
+      "main"
+    ],
     "plugins": [
       [
         "@semantic-release/commit-analyzer",
@@ -65,7 +67,11 @@
             }
           ],
           "parserOpts": {
-            "noteKeywords": ["BREAKING CHANGE", "BREAKING CHANGES", "BREAKING"]
+            "noteKeywords": [
+              "BREAKING CHANGE",
+              "BREAKING CHANGES",
+              "BREAKING"
+            ]
           }
         }
       ],
@@ -82,11 +88,14 @@
       [
         "@semantic-release/git",
         {
-          "assets": ["CHANGELOG.md"],
+          "assets": [
+            "CHANGELOG.md"
+          ],
           "message": "${nextRelease.version} CHANGELOG [skip ci]\n\n${nextRelease.notes}"
         }
       ]
     ],
     "debug": false,
     "dryRun": false
-  }}
+  }
+}

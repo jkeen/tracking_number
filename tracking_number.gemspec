@@ -9,6 +9,7 @@ Gem::Specification.new do |s|
   s.version = TrackingNumber::VERSION
   s.platform = Gem::Platform::RUBY
   s.required_rubygems_version = Gem::Requirement.new('>= 0') if s.respond_to? :required_rubygems_version=
+  s.required_ruby_version = Gem::Requirement.new('>= 3.0.0')
   s.authors = ['Jeff Keen']
   s.description = "This gem identifies valid tracking numbers and the service they're associated with. It can also tell you a little bit about the package purely from the number—there's quite a bit of info tucked away into those numbers, it turns out."
   s.email = 'jeff@keen.me'
