@@ -1,5 +1,7 @@
 tracking_number changelog
 
+# [2.0.0](https://github.com/jkeen/tracking_number/compare/v1.6.0...v2.0.0) (2024-08-18)
+
 # [1.6.0](https://github.com/jkeen/tracking_number/compare/v1.5.0...v1.6.0) (2023-11-14)
 
 
