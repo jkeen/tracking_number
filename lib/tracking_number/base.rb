@@ -24,7 +24,7 @@ module TrackingNumber
       # matches with match groups within the match data
       matches = []
 
-      body.scan(const_get(:SEARCH_PATTERN)) do
+      body.upcase.scan(const_get(:SEARCH_PATTERN)) do
         # get the match data instead, which is needed with these types of regexes
         matches << $~
       end
