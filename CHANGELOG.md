@@ -1,5 +1,12 @@
 tracking_number changelog
 
+## [2.0.1](https://github.com/jkeen/tracking_number/compare/v2.0.0...v2.0.1) (2024-08-20)
+
+
+### Bug Fixes
+
+* upcase body before searching to find lowercase tracking numbers ([#85](https://github.com/jkeen/tracking_number/issues/85)) ([e07c754](https://github.com/jkeen/tracking_number/commit/e07c754ba3647ae4e587b30a5c51bfa23a4589e5))
+
 # [2.0.0](https://github.com/jkeen/tracking_number/compare/v1.6.0...v2.0.0) (2024-08-18)
 
 # [1.6.0](https://github.com/jkeen/tracking_number/compare/v1.5.0...v1.6.0) (2023-11-14)
