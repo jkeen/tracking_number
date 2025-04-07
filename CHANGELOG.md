@@ -1,5 +1,12 @@
 tracking_number changelog
 
+# [2.1.0](https://github.com/jkeen/tracking_number/compare/v2.0.1...v2.1.0) (2025-04-07)
+
+
+### Features
+
+* update tracking_number_data adding support for Old Dominion ([f209148](https://github.com/jkeen/tracking_number/commit/f209148187e08111078c88bd74e011e375e05056))
+
 ## [2.0.1](https://github.com/jkeen/tracking_number/compare/v2.0.0...v2.0.1) (2024-08-20)
 
 
