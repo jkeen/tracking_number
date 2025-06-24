@@ -1,5 +1,17 @@
 tracking_number changelog
 
+# [2.2.0](https://github.com/jkeen/tracking_number/compare/v2.1.1...v2.2.0) (2025-06-24)
+
+
+### Bug Fixes
+
+* bump tracking_number_data to 1.8.1 to tighten up e-commerce tracking number detection ([a2409df](https://github.com/jkeen/tracking_number/commit/a2409df7b9b1c2d9a89bd3323304bf4ba3d19e8a))
+
+
+### Features
+
+* update to tracking number data 1.8 adding support for DHL 14 digit numbers ([5c14110](https://github.com/jkeen/tracking_number/commit/5c1411041544e400e25d94f385d2d230c5bedbbd))
+
 ## [2.1.1](https://github.com/jkeen/tracking_number/compare/v2.1.0...v2.1.1) (2025-04-08)
 
 # [2.1.0](https://github.com/jkeen/tracking_number/compare/v2.0.1...v2.1.0) (2025-04-07)
