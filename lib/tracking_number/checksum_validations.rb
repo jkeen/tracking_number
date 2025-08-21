@@ -34,7 +34,13 @@ module TrackingNumber
 
       def validates_mod10?(sequence, check_digit, extras = {})
         total = 0
-        sequence.chars.each_with_index do |c, i|
+        characters = if extras[:reverse]
+          sequence.chars.reverse
+        else
+          sequence.chars
+        end
+
+        characters.each_with_index do |c, i|
           x = if c[/[0-9]/] # numeric
             c.to_i
           else
