@@ -1,5 +1,12 @@
 tracking_number changelog
 
+# [2.4.0](https://github.com/jkeen/tracking_number/compare/v2.3.0...v2.4.0) (2025-08-21)
+
+
+### Features
+
+* update to tracking_number_data 1.9.0 ([f885bfd](https://github.com/jkeen/tracking_number/commit/f885bfd956ffacb22f38967754ec14551bca8d50))
+
 # [2.3.0](https://github.com/jkeen/tracking_number/compare/v2.2.0...v2.3.0) (2025-08-21)
 
 
