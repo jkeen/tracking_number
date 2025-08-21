@@ -235,8 +235,10 @@ module TrackingNumber
 
       additional.each do |additional_info|
         next unless matches && matches.length > 0 # skip if no match groups
+
         value = matches[additional_info[:regex_group_name]].gsub(/\s/, '') # match is empty
         next unless value
+        next unless additional_info[:lookup]
 
         matches = additional_info[:lookup].find do |i|
           if i[:matches]
