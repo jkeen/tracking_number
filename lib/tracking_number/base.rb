@@ -126,16 +126,16 @@ module TrackingNumber
 
     def info
       Info.new({
-                 courier: courier_info,
-                 service_type: service_type,
-                 service_description: service_description,
-                 destination_zip: destination_zip,
-                 shipper_id: shipper_id,
-                 package_type: package_type,
-                 tracking_url: tracking_url,
-                 partners: partners,
-                 decode: decode
-               })
+        courier: courier_info,
+        service_type: service_type,
+        service_description: service_description,
+        destination_zip: destination_zip,
+        shipper_id: shipper_id,
+        package_type: package_type,
+        tracking_url: tracking_url,
+        partners: partners,
+        decode: decode
+      })
     end
 
     def courier_code
@@ -186,8 +186,7 @@ module TrackingNumber
       partner_hash = {}
 
       return unless (partner_tn = find_matching_partner)
-
-      possible_twin = partner_tn.send(:find_matching_partner)
+      possible_twin = partner_tn.send(:find_matching_partner, self.class.const_get("ID"))
 
       if possible_twin.instance_of?(self.class) && possible_twin.tracking_number == tracking_number
         partner_hash[partner_data[:partner_type].to_sym] = partner_tn
@@ -295,8 +294,12 @@ module TrackingNumber
       nil
     end
 
-    def find_matching_partner
-      partner_info = self.class.const_get(:PARTNERS) || []
+    def find_matching_partner(partner_id = nil)
+      partner_info = if partner_id 
+        (self.class.const_get(:PARTNERS) || []).select { |info| info[:partner_id]&.to_sym == partner_id.to_sym }
+      else
+        self.class.const_get(:PARTNERS) || []
+      end
 
       partner_info.each do |partner_data|
         klass = find_tracking_class_by_id(partner_data[:partner_id])
@@ -304,7 +307,6 @@ module TrackingNumber
         return false unless klass
 
         tn = klass.new(tracking_number)
-
         valid = if partner_data.dig(:validation, :matches_all)
                   tn.valid? && match_all(partner_data.dig(:validation, :matches_all))
                 elsif partner_data.dig(:validation, :matches_any)
