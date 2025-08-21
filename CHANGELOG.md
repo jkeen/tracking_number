@@ -1,5 +1,17 @@
 tracking_number changelog
 
+# [2.3.0](https://github.com/jkeen/tracking_number/compare/v2.2.0...v2.3.0) (2025-08-21)
+
+
+### Bug Fixes
+
+* prevent error when lookup is balnk for an additional info group ([cce4ddd](https://github.com/jkeen/tracking_number/commit/cce4dddf1ec4b62baa684af24a8be96893fd33a6))
+
+
+### Features
+
+* add validation option to mod10 to validate in reverse ([3736b50](https://github.com/jkeen/tracking_number/commit/3736b5003d2cc4cbaec2db50f8b64add61897731))
+
 # [2.2.0](https://github.com/jkeen/tracking_number/compare/v2.1.1...v2.2.0) (2025-06-24)
 
 
