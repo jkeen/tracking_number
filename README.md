@@ -2,21 +2,15 @@
 [![Gem Version](https://badge.fury.io/rb/tracking_number.svg)](https://badge.fury.io/rb/tracking_number)
 [![Gem](https://img.shields.io/gem/dt/tracking_number.svg)]()
 
-> Hey there tracking number enthusiast! I don't use this project in any production capacity, and really never have. I am not a tracking number expert, and I don't have inside connections to a shipping company—I'm just a guy that once tried to make a package tracking app and this gem is all that survived. When I have absolutely nothing to do it's kinda fun to tinker with, but time has become more and more of a precious resource. Anyway, maintaining this is thankless work, and if this project has been useful for you I sure would appreciate a cup or two of coffee slid my way as a token of appreciation. A PR would also be nice. 
-> 
-> <a href="https://www.buymeacoffee.com/jeffkeen" target="_blank"><img src="https://cdn.buymeacoffee.com/buttons/v2/default-yellow.png" alt="Buy Me A Coffee" style="height: auto !important;width: 150px !important;" ></a>
-
-## Tracking Number (v1.x)
+## Tracking Number
 
 This gem identifies valid tracking numbers and can tell you a little bit about the shipment just from the number—there's quite a bit of info tucked away into those numbers, it turns out.
 
-It detects tracking numbers from UPS, FedEx, DHL, USPS, OnTrac, Amazon Logistics, and 160+ countries national postal services (S10 standard).
+It detects tracking numbers from USPS, UPS, FedEx, Amazon, DHL, OnTrac, LaserShip, Canada Post, DPD, Purolator, Old Dominion Freight Line, Spee-Dee Delivery, Canpar, YunExpress, Landmark Global, GOFO Express, and any carrier using the S10 international standard.
 
 This gem does not do tracking. That is left up to you.
 
-#### New in 1.0
-
-Starting with the 1.0 release the specifications for detecting tracking numbers have been moved into a separate repository ([tracking_number_data](http://github.com/jkeen/tracking_number_data)) that this gem relies on. I did this so a) we can have a single place to document all tracking number types and it can be more of a crowdsourced effort, and b) so clients can be written in other languages easier.
+All the matching data is kept in [tracking_number_data](https://github.com/jkeen/tracking_number_data) and displayed in full on [trackingnumber.fyi](https://trackingnumber.fyi).
 
 ## Usage
 
