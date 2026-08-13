@@ -1,5 +1,12 @@
 tracking_number changelog
 
+# [2.5.0](https://github.com/jkeen/tracking_number/compare/v2.4.0...v2.5.0) (2026-08-13)
+
+
+### Features
+
+* update to tracking_number_data 1.12, which includes support for Canpar, Purolator, Spee-Dee, YunExpress, and an updated FedEx matcher ([ca67edf](https://github.com/jkeen/tracking_number/commit/ca67edf0eaeab33171008bf115e96bdcf55c0d4b))
+
 # [2.4.0](https://github.com/jkeen/tracking_number/compare/v2.3.0...v2.4.0) (2025-08-21)
 
 
