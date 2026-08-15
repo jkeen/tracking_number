@@ -60,4 +60,29 @@ module TrackingNumber
   def self.new(tracking_number)
     detect(tracking_number)
   end
+
+  # Renamed in tracking_number_data 2.0. The old constant still describes the same barcode.
+  RENAMED_TYPES = { USPS91: :USPSIMpbC, USPS22: :USPSIMpbN, USPS34v2: :USPSIMpbC }.freeze
+
+  # Removed in tracking_number_data 2.0. An alias would answer is_a? for every IMpb number,
+  # which is the claim the data stopped making, so these raise instead.
+  WITHDRAWN_TYPES = {
+    FedExSmartPost: 'USPSIMpbC',
+    DHLECommerce30: 'USPSIMpbC'
+  }.freeze
+
+  def self.const_missing(name)
+    if (renamed = RENAMED_TYPES[name])
+      warn "TrackingNumber::#{name} is now TrackingNumber::#{renamed}"
+      return const_get(renamed)
+    end
+
+    if (replacement = WITHDRAWN_TYPES[name])
+      raise NameError, "TrackingNumber::#{name} no longer exists. These are USPS IMpb barcodes " \
+                       "carrying nothing that identifies the shipper, so they now decode as " \
+                       "TrackingNumber::#{replacement}."
+    end
+
+    super
+  end
 end

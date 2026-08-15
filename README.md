@@ -128,32 +128,6 @@ Most tracking numbers have a format where each part of the number has meaning. `
   # }   
 ```
 
-#### Multiple shippers / Partnerships
-Some tracking numbers match multiple carriers, because they belong to multiple carriers. Some shipments like Fedex Smartpost contract the "last mile" out to USPS. 
-
-```ruby
-  # Search defaults to only showing numbers that fulfill the carrier side of the relationship 
-  # (if a partnership exists at all), as this is the end a consumer would most likely be interested in.
-
-  results = TrackingNumber.search('420112139261290983497923666238') 
-  => [#<TrackingNumber::USPS91:0x26ac0 420112139261290983497923666238>]
-
-  all_results = TrackingNumber.search('420112139261290983497923666238', match: :all) 
-  => [#<TrackingNumber::FedExSmartPost:0x30624 420112139261290983497923666238>, #<TrackingNumber::USPS91:0x26ac0 420112139261290983497923666238>]
-
-  tn = results.first
-  tn.shipper? #=> false
-  tn.carrier? #=> true
-  tn.partnership? #=> true
-  tn.partners
-  #=> <struct TrackingNumber::Base::PartnerStruct
-  #       shipper=#<TrackingNumber::FedExSmartPost:0x30624 420112139261290983497923666238>,
-  #       carrier=#<TrackingNumber::USPS91:0x2f1fc 420112139261290983497923666238>>
-
-  tn.partners.shipper #=> #<TrackingNumber::FedExSmartPost:0x30624 420112139261290983497923666238>
-  tn.partners.carrier == tn #=> true
-```
-
 ## ActiveModel validation
 
 For Rails 3 (or any ActiveModel client), validate your fields as a tracking number:

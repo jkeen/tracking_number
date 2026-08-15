@@ -109,7 +109,7 @@ class TrackingNumberTest < Minitest::Test
     end
 
     should "report correct service" do
-      assert_nil tracking_number.service_type
+      assert_equal "Delivery Confirmation", tracking_number.service_type
     end
 
     should "report correct shipper_id" do
@@ -142,7 +142,7 @@ class TrackingNumberTest < Minitest::Test
     end
 
     should "report correct shipper_id" do
-      assert_equal "00190132", tracking_number.shipper_id
+      assert_equal "901326076", tracking_number.shipper_id
     end
 
     should "report correct no destination" do
@@ -158,7 +158,7 @@ class TrackingNumberTest < Minitest::Test
     end
 
     should "report no partners" do
-      assert_equal nil, tracking_number.partners
+      assert_nil tracking_number.partners
     end
 
     should "report as shipper and carrier" do
@@ -172,7 +172,7 @@ class TrackingNumberTest < Minitest::Test
     end
   end
 
-  context "tracking number partnership data for FedExSmartPost/USPS91" do
+  context "tracking number additional data for USPS Parcel Select" do
     tracking_number = TrackingNumber.new("420 11213 92 6129098349792366623 8")
 
     should "report correct courier name" do
@@ -184,31 +184,28 @@ class TrackingNumberTest < Minitest::Test
     end
 
     should "report correct service type" do
-      assert_equal "Fedex Smart Post", tracking_number.service_type
+      assert_equal "Parcel Select", tracking_number.service_type
     end
 
-    should "report partnership" do
-      assert_equal true, tracking_number.partnership?
+    should "report no partnership" do
+      assert_equal false, tracking_number.partnership?
     end
 
-    should "report not shipper side of the partnership" do
-      assert_equal false, tracking_number.shipper?
-    end
-
-    should "report carrier side of the partnership" do
+    should "report as shipper and carrier" do
+      assert_equal true, tracking_number.shipper?
       assert_equal true, tracking_number.carrier?
     end
 
-    should "report partner pairing" do
-      assert_equal :fedex, tracking_number.partners.shipper.courier_code
+    should "report no partners" do
+      assert_nil tracking_number.partners
     end
   end
 
-  context "searching numbers that have partners" do
-    partnership_number = "420 11213 92 6129098349792366623 8"
+  context "searching for numbers" do
+    parcel_select_number = "420 11213 92 6129098349792366623 8"
     single_number = "92001903060085300042901077"
 
-    search_string = ["number that matches two services", partnership_number, " number that matches only one: ", single_number, "let's see if that does it"].join(' ')
+    search_string = ["number that matches two services", parcel_select_number, " number that matches only one: ", single_number, "let's see if that does it"].join(' ')
 
     should "match only carriers by default" do
       matches = TrackingNumber.search(search_string)
@@ -218,7 +215,7 @@ class TrackingNumberTest < Minitest::Test
 
     should "match all if specified" do
       matches = TrackingNumber.search(search_string, match: :all)
-      assert_equal 3, matches.size
+      assert_equal 2, matches.size
     end
 
     should "match only shippers if specified" do

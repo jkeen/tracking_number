@@ -30,7 +30,7 @@ class TrackingNumberMetaTest < Minitest::Test
           if tracking_info[:validation][:checksum]
             # only run this test if number format has checksum
             should "fail on check digit changes with #{valid_number}" do
-              should_fail_on_check_digit_changes(valid_number)
+              should_fail_on_check_digit_changes(valid_number, klass)
             end
           end
 
